@@ -10,13 +10,20 @@ package proyectofinal;
  *
  * @author Gonzalez
  */
+
+import java.io.IOException;
+import javax.swing.JFrame;
+
 public class ProyectoFinal {
 
     /**    hola
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args)  throws IOException {
+        Juego variable;
+        variable = new Juego();
+        variable.setVisible(true);
+        variable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
 }

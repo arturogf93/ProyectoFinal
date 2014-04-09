@@ -21,11 +21,14 @@ public class Base extends Animacion {
 
     //@param  posX es para saber la posicion x de tipo <code>int</code>
     //@param  posY es para saber la posicion y detipo <code>int</code>
-    public Base(int posX, int posY) {       //constructor del objeto
-        this.posX = posX;
-        this.posY = posY;
-        this.imagenes = new Animacion();
+   public Base(int posX, int posY, Animacion anim){ //constructor 
+        this.posX=posX;
+        this.posY=posY;
+        imagenes=anim;
+        
     }
+
+   
 
     //@param  posX es para saber la posicion x que se asignara de tipo <code>int</code>
     public void setPosX(int posX) {     //metodo para asignar valor a posX

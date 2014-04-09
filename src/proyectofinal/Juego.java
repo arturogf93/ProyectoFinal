@@ -40,6 +40,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int fondo1;
     private int fondo2;
     private int velocidad;
+    
+    private Base carro;
 
     private Image carrito;
     private Image fondo;
@@ -47,6 +49,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean inicio;
     private boolean gameover;
     private boolean choquesonido;
+    
+    private Animacion animC;            // animacion del carro
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -67,6 +71,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo1 = 0;
         fondo2 = 1200;
         velocidad = 2;
+        
+         Image carro1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png"));
+        
+        animC = new Animacion();                //crea animacion del carro
+        animC.sumaCuadro(carro1, 100);
+        
+        carro= new Base(300,500,animC);
     }
 
     /**
@@ -214,7 +225,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (carrito != null) {
             g.drawImage(fondo, fondo1,0,this);
             g.drawImage(fondo, fondo2,0,this);
-            g.drawImage(carrito, 50, 50, this);
+            g.drawImage(carrito, carro.getPosX(), carro.getPosY(), this);
             
         } else {
             //Da un mensaje mientras se carga el dibujo	

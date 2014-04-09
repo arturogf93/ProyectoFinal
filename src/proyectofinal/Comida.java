@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package proyectofinal;
 
 /**
@@ -11,12 +10,14 @@ package proyectofinal;
  * @author Abraham
  */
 public class Comida extends Base {
+
     private int valor;
+
     public Comida(int posX, int posY, Animacion anim, int valor) {
         super(posX, posY, anim);
         this.valor = valor;
     }
-    
+
     //@param  valor es para saber cuantos puntos dara de tipo <code>int</code>
     public void setValor(int valor) {     //metodo para asignar valor a valor
         this.valor = valor;

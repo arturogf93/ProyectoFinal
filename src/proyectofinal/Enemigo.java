@@ -3,23 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package proyectofinal;
 
 /**
  *
  * @author Abraham
  */
-public class Enemigo extends Base{
+public class Enemigo extends Base {
+
     private int id;
     private int velocidad;
+
     public Enemigo(int posX, int posY, Animacion anim, int id, int velocidad) {
         super(posX, posY, anim);
         this.id = id;
-        this.velocidad=velocidad;
+        this.velocidad = velocidad;
     }
-    
-        //@param  id es para dar diferentes id a cada objeto de tipo <code>int</code>
+
+    //@param  id es para dar diferentes id a cada objeto de tipo <code>int</code>
     public void setId(int id) {     //metodo para asignar valor a valor
         this.id = id;
     }
@@ -28,8 +29,8 @@ public class Enemigo extends Base{
     public int getId() {              //metodo para obtener id
         return this.id;
     }
-    
-        //@param  velocidad es para saber la velocidad de tipo <code>int</code>
+
+    //@param  velocidad es para saber la velocidad de tipo <code>int</code>
     public void setVelocidad(int velocidad) {     //metodo para asignar valor a velocidad
         this.velocidad = velocidad;
     }

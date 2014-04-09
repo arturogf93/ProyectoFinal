@@ -2,7 +2,7 @@ package proyectofinal;
 /**
  *
  * @author Oscar Abraham Rodriguez Quintanilla, Arturo Armando Gonzalez
- * Fernandez
+ * Fernandez, David Valles Canedo
  */
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -36,7 +36,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image dbImage;              //Imagen para el doblebuffer 
     private long tiempoActual;          //Long para el tiempo del applet
 
-    private Image carrito;
+    private Image carrito;              // Carrito
+    private Image fondo;
     private boolean pausa;              //Booleando para pausa
     private boolean inicio;
     private boolean gameover;
@@ -55,6 +56,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png"));
+        fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo.jpg"));
         inicio = true;
         pausa = false;
         gameover = false;
@@ -197,6 +199,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         g.setColor(Color.RED);
         if (carrito != null) {
+            g.drawImage(fondo, 0, 0, this);
             g.drawImage(carrito, 50, 50, this);
         } else {
             //Da un mensaje mientras se carga el dibujo	

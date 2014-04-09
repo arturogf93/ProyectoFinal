@@ -1,4 +1,5 @@
 package proyectofinal;
+
 /**
  *
  * @author Oscar Abraham Rodriguez Quintanilla, Arturo Armando Gonzalez
@@ -36,13 +37,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image dbImage;              //Imagen para el doblebuffer 
     private long tiempoActual;          //Long para el tiempo del applet
 
+    private int fondo1;
+    private int fondo2;
+    private int velocidad;
+
     private Image carrito;
+    private Image fondo;
     private boolean pausa;              //Booleando para pausa
     private boolean inicio;
     private boolean gameover;
     private boolean choquesonido;
-
-
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -55,10 +59,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png"));
+        fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Fondo.jpg"));
         inicio = true;
         pausa = false;
         gameover = false;
         choquesonido = false;
+        fondo1 = 0;
+        fondo2 = 1200;
+        velocidad = 2;
     }
 
     /**
@@ -112,7 +120,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
-        
+        fondo1-=velocidad;
+        fondo2-=velocidad;
+        if (fondo1 <= -1200) {
+            fondo1 = 1200;
+        }
+        if (fondo2 <= -1200) {
+            fondo2 = 1200;
+        }
     }
 
     /**
@@ -120,7 +135,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * las orillas del <code>Applet</code>.
      */
     public void checaColision() {
-        
+
     }
 
     /**
@@ -198,6 +213,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setColor(Color.RED);
         if (carrito != null) {
             g.drawImage(carrito, 50, 50, this);
+            g.drawImage(fondo, fondo1,0,this);
+            g.drawImage(fondo, fondo2,0,this);
         } else {
             //Da un mensaje mientras se carga el dibujo	
             g.drawString("No se cargo la imagen..", 20, 20);

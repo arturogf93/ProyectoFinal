@@ -3,7 +3,7 @@ package proyectofinal;
 /**
  *
  * @author Oscar Abraham Rodriguez Quintanilla, Arturo Armando Gonzalez
- * Fernandez
+ * Fernandez, David Valles Canedo
  */
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -212,9 +212,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         g.setColor(Color.RED);
         if (carrito != null) {
-            g.drawImage(carrito, 50, 50, this);
             g.drawImage(fondo, fondo1,0,this);
             g.drawImage(fondo, fondo2,0,this);
+            g.drawImage(carrito, 50, 50, this);
+            
         } else {
             //Da un mensaje mientras se carga el dibujo	
             g.drawString("No se cargo la imagen..", 20, 20);

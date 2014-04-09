@@ -41,7 +41,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int fondo2;
     private int velocidad;
     
-    private Base carro;
+    private Carro carro;
+    private Comida hamburguesa;
+    private Comida coca;
+    private Comida zanahoria;
+    private Comida ice;
+    private Comida cookie;
+    
+    private Podrida queso;
+    private Podrida fish;
+    private Podrida pizza;
 
     private Image carrito;
     private Image fondo;
@@ -51,20 +60,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean choquesonido;
     
     private Animacion animC;            // animacion del carro
+    private Animacion animH;
+    private Animacion animCan;
+    private Animacion animZ;
+    private Animacion animIce;
+    private Animacion animCoo;
+    private Animacion animQ;
+    private Animacion animF;
+    private Animacion animP;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
      * usarse en el <code>Jframe</code> y se definen funcionalidades.
+     * @throws java.io.IOException
      */
-    public void init() throws IOException {
+    public void init() throws IOException  {
         this.setSize(1200, 600);
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png"));
         fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Fondo.jpg"));
-        inicio = true;
         pausa = false;
         gameover = false;
         choquesonido = false;
@@ -72,12 +89,65 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo2 = 1200;
         velocidad = 2;
         
-         Image carro1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png"));
-        
         animC = new Animacion();                //crea animacion del carro
-        animC.sumaCuadro(carro1, 100);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png")), 100);
+        carro= new Carro(300,500,animC);
         
-        carro= new Base(300,500,animC);
+        animH = new Animacion();
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer1.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer3.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
+        hamburguesa = new Comida(100, 100, animH, 1);
+        
+        animCan = new Animacion();
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can1.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can3.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
+        coca = new Comida(130, 100, animCan, 2);
+     
+        animZ = new Animacion();
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot1.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot3.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
+        zanahoria = new Comida(160, 100, animZ, 3);
+        
+        animIce = new Animacion();
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice1.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice3.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
+        ice = new Comida(190, 100, animIce, 5);
+        
+        animCoo = new Animacion();
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie1.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie3.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
+        cookie = new Comida(220, 100, animCoo, 10);
+        
+        animQ = new Animacion();
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese1.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese3.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
+        queso = new Podrida(250, 100, animQ);
+        
+        animF = new Animacion();
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish1.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish3.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
+        fish = new Podrida(280, 100, animF);
+        
+        animP = new Animacion();
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza1.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza3.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
+        pizza = new Podrida(310, 100, animP);
     }
 
     /**
@@ -131,13 +201,23 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
-        fondo1-=velocidad;
-        fondo2-=velocidad;
-        if (fondo1 <= -1200) {
-            fondo1 = 1200;
-        }
-        if (fondo2 <= -1200) {
-            fondo2 = 1200;
+        if (!pausa){
+            fondo1-=velocidad;
+            fondo2-=velocidad;
+            (hamburguesa.getImagenes()).actualiza(tiempoActual);
+            (coca.getImagenes()).actualiza(tiempoActual);
+            (zanahoria.getImagenes()).actualiza(tiempoActual);
+            (ice.getImagenes()).actualiza(tiempoActual);
+            (cookie.getImagenes()).actualiza(tiempoActual);
+            (queso.getImagenes()).actualiza(tiempoActual);
+            (fish.getImagenes()).actualiza(tiempoActual);
+            (pizza.getImagenes()).actualiza(tiempoActual);
+            if (fondo1 <= -1200) {
+                fondo1 = 1200;
+            }
+            if (fondo2 <= -1200) {
+                fondo2 = 1200;
+            }
         }
     }
 
@@ -208,7 +288,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> que se genera en al soltar las teclas.
      */
     public void keyReleased(KeyEvent e) {
-
+       if (e.getKeyCode() == KeyEvent.VK_P) {  pausa = !pausa;
+        }
     }
 
     /**
@@ -225,7 +306,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (carrito != null) {
             g.drawImage(fondo, fondo1,0,this);
             g.drawImage(fondo, fondo2,0,this);
-            g.drawImage(carrito, carro.getPosX(), carro.getPosY(), this);
+            g.drawImage(carro.getImagen(), carro.getPosX(), carro.getPosY(), this);
+            g.drawImage(hamburguesa.getImagen(), hamburguesa.getPosX(), hamburguesa.getPosY(), this);
+            g.drawImage(coca.getImagen(), coca.getPosX(), coca.getPosY(), this);
+            g.drawImage(zanahoria.getImagen(), zanahoria.getPosX(), zanahoria.getPosY(), this);
+            g.drawImage(ice.getImagen(), ice.getPosX(), ice.getPosY(), this);
+            g.drawImage(cookie.getImagen(), cookie.getPosX(), cookie.getPosY(), this);
+            g.drawImage(queso.getImagen(), queso.getPosX(), queso.getPosY(), this);
+            g.drawImage(fish.getImagen(), fish.getPosX(), fish.getPosY(), this);
+            g.drawImage(pizza.getImagen(), pizza.getPosX(), pizza.getPosY(), this);
             
         } else {
             //Da un mensaje mientras se carga el dibujo	

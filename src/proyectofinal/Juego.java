@@ -40,28 +40,33 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int fondo1;
     private int fondo2;
     private int velocidad;
-    
+    private int gravedad;
+
     private Carro carro;
     private Comida hamburguesa;
     private Comida coca;
     private Comida zanahoria;
     private Comida ice;
     private Comida cookie;
-    
+
     private Podrida queso;
     private Podrida fish;
     private Podrida pizza;
-    
+
     private Enemigo viejita;
     private Enemigo niño;
 
     private Image carrito;
     private Image fondo;
+
     private boolean pausa;              //Booleando para pausa
+    private boolean jump;
+    private boolean doublejump;
     private boolean inicio;
     private boolean gameover;
     private boolean choquesonido;
-    
+    private boolean suelta;
+
     private Animacion animC;            // animacion del carro
     private Animacion animH;
     private Animacion animCan;
@@ -78,9 +83,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
      * usarse en el <code>Jframe</code> y se definen funcionalidades.
+     *
      * @throws java.io.IOException
      */
-    public void init() throws IOException  {
+    public void init() throws IOException {
         this.setSize(1200, 600);
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
@@ -90,77 +96,86 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         pausa = false;
         gameover = false;
         choquesonido = false;
+        jump = false;
+        doublejump = false;
+        suelta = true;
         fondo1 = 0;
         fondo2 = 1200;
         velocidad = 2;
-        
+        gravedad = 3;
+
         animC = new Animacion();                //crea animacion del carro
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito.png")), 100);
-        carro= new Carro(100,490,animC);
-        
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito1.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito2.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito3.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito4.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito5.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito6.png")), 80);
+        carro = new Carro(100, 490, animC, 0);
+
         animH = new Animacion();
         animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer1.png")), 50);
         animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
         animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer3.png")), 50);
         animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
         hamburguesa = new Comida(800, 270, animH, 1);
-        
+
         animCan = new Animacion();
         animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can1.png")), 50);
         animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
         animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can3.png")), 50);
         animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
         coca = new Comida(830, 270, animCan, 2);
-     
+
         animZ = new Animacion();
         animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot1.png")), 50);
         animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
         animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot3.png")), 50);
         animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
         zanahoria = new Comida(860, 270, animZ, 3);
-        
+
         animIce = new Animacion();
         animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice1.png")), 50);
         animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
         animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice3.png")), 50);
         animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
         ice = new Comida(890, 270, animIce, 5);
-        
+
         animCoo = new Animacion();
         animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie1.png")), 50);
         animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
         animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie3.png")), 50);
         animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
         cookie = new Comida(920, 270, animCoo, 10);
-        
+
         animQ = new Animacion();
         animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese1.png")), 50);
         animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
         animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese3.png")), 50);
         animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
         queso = new Podrida(950, 270, animQ);
-        
+
         animF = new Animacion();
         animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish1.png")), 50);
         animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
         animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish3.png")), 50);
         animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
         fish = new Podrida(980, 270, animF);
-        
+
         animP = new Animacion();
         animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza1.png")), 50);
         animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
         animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza3.png")), 50);
         animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
         pizza = new Podrida(1010, 270, animP);
-        
+
         animV = new Animacion();
         animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita1.png")), 80);
         animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
         animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita3.png")), 80);
         animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
-        viejita = new Enemigo(800, 450, animV,1);
-        
+        viejita = new Enemigo(800, 450, animV, 1);
+
         animN = new Animacion();
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño0.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño1.png")), 80);
@@ -170,7 +185,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño5.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño6.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño7.png")), 80);
-        niño = new Enemigo(900, 465, animN,1);
+        niño = new Enemigo(900, 465, animN, 1);
     }
 
     /**
@@ -224,9 +239,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
-        if (!pausa){
-            fondo1-=velocidad;
-            fondo2-=velocidad;
+        if (!pausa) {
+
+            //Actualizar animaciones
+            (carro.getImagenes()).actualiza(tiempoActual);
             (hamburguesa.getImagenes()).actualiza(tiempoActual);
             (coca.getImagenes()).actualiza(tiempoActual);
             (zanahoria.getImagenes()).actualiza(tiempoActual);
@@ -237,12 +253,37 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             (pizza.getImagenes()).actualiza(tiempoActual);
             (viejita.getImagenes()).actualiza(tiempoActual);
             (niño.getImagenes()).actualiza(tiempoActual);
+
+            //Actualizar fondo
+            fondo1 -= velocidad;
+            fondo2 -= velocidad;
             if (fondo1 <= -1200) {
                 fondo1 = 1200;
             }
             if (fondo2 <= -1200) {
                 fondo2 = 1200;
             }
+
+            //Saltos
+            if (jump || doublejump) {
+                if (carro.getSuelo()) {
+                    jump = false;
+                    doublejump = false;
+                }
+                if (carro.getPosY() + carro.getVelY() >= 490) {
+                    carro.setSuelo(true);
+                    carro.setPosY(490);
+                    carro.setVelY(0);
+                } else if (carro.getPosY() + carro.getVelY() <= 20){
+                    carro.setPosY(20);
+                    carro.setVelY(carro.getVelY() + gravedad);
+                }
+                else{
+                    carro.setPosY(carro.getPosY()+ carro.getVelY());
+                    carro.setVelY(carro.getVelY() + gravedad);
+                }
+            }
+            
         }
     }
 
@@ -289,6 +330,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> generado al presionar las teclas.
      */
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (!jump && !doublejump && carro.getSuelo()) {
+                carro.setVelY(-36);
+                jump = true;
+                carro.setSuelo(false);
+            } else if (jump && !carro.getSuelo() && !doublejump) {
+                carro.setVelY(-36);
+                jump = false;
+                doublejump = true;
+            }
+        }
     }
 
     /**
@@ -313,7 +365,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> que se genera en al soltar las teclas.
      */
     public void keyReleased(KeyEvent e) {
-       if (e.getKeyCode() == KeyEvent.VK_P) {  pausa = !pausa;
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            pausa = !pausa;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            suelta = true;
         }
     }
 
@@ -329,8 +385,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         g.setColor(Color.RED);
         if (carrito != null) {
-            g.drawImage(fondo, fondo1,0,this);
-            g.drawImage(fondo, fondo2,0,this);
+            g.drawImage(fondo, fondo1, 0, this);
+            g.drawImage(fondo, fondo2, 0, this);
             g.drawImage(carro.getImagen(), carro.getPosX(), carro.getPosY(), this);
             g.drawImage(hamburguesa.getImagen(), hamburguesa.getPosX(), hamburguesa.getPosY(), this);
             g.drawImage(coca.getImagen(), coca.getPosX(), coca.getPosY(), this);
@@ -342,7 +398,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.drawImage(pizza.getImagen(), pizza.getPosX(), pizza.getPosY(), this);
             g.drawImage(viejita.getImagen(), viejita.getPosX(), viejita.getPosY(), this);
             g.drawImage(niño.getImagen(), niño.getPosX(), niño.getPosY(), this);
-            
+
         } else {
             //Da un mensaje mientras se carga el dibujo	
             g.drawString("No se cargo la imagen..", 20, 20);

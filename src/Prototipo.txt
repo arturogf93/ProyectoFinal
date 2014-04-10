@@ -12,9 +12,15 @@ Zanahoria: 3
 Helado: 5
 Galleta: 10
 
-Existen dos tipos de enemigos las frutas podridas y el niño y la anciana. 
+Existen dos tipos de enemigos las frutas podridas, el niño y la anciana. 
 Al acumular tres frutas podridas perderás el juego y los puntos se bajan 
-hasta cero. Al chocar con el niño o la anciana también perreras los puntos.
+hasta cero. Al chocar con el niño o la anciana también perderas los puntos.
+El niño avanza mas rapido que la anciana, pero la anciana es mas grande y 
+dificil de brincar.
+
+Asi mismo se utiliza el space para brincar (se puede hacer un double jump)
+
+La P para pausar el juego.
 
 Funciones que faltan:
 Tienda

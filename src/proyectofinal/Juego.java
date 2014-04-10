@@ -39,6 +39,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private int fondo1;
     private int fondo2;
+    private int fondo3;
     private int velocidad;
     private int gravedad;
     private int score;
@@ -60,7 +61,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Enemigo niño;
 
     private Image carrito;
-    private Image fondo;
+    private Image fondo01;
+    private Image fondo02;
+    private Image fondo03;
 
     private boolean pausa;              //Booleando para pausa
     private boolean jump;
@@ -95,7 +98,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Cart.png"));
-        fondo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Fondo.jpg"));
+        fondo01 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo01.jpg"));
+        fondo02 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo02.jpg"));
+        fondo03 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo03.jpg"));
         pausa = false;
         gameover = false;
         choquesonido = false;
@@ -107,17 +112,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         auxprot = 0;
         fondo1 = 0;
         fondo2 = 1200;
+        fondo3 = 2400;
         velocidad = 2;
         gravedad = 3;
         score = 0;
 
         animC = new Animacion();                //crea animacion del carro
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito1.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito2.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito3.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito4.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito5.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrito6.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito1.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito2.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito3.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito4.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito5.png")), 80);
+        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito6.png")), 80);
         carro = new Carro(100, 490, animC, 0);
 
         animH = new Animacion();
@@ -264,13 +270,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             //Actualizar fondo
             fondo1 -= velocidad;
             fondo2 -= velocidad;
-            if (fondo1 <= -1200) {
+            fondo3 -= velocidad;
+            if (fondo1 <= -2400) {
                 fondo1 = 1200;
             }
-            if (fondo2 <= -1200) {
+            if (fondo2 <= -2400) {
                 fondo2 = 1200;
             }
-
+            if (fondo3 <= -2400){
+                fondo3 = 1200;
+            }
             //Saltos
             if (jump || doublejump) {
                 if (carro.getSuelo()) {
@@ -486,9 +495,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setColor(Color.RED);
         if (carrito != null) {
             //Fondo
-            g.drawImage(fondo, fondo1, 0, this);
-            g.drawImage(fondo, fondo2, 0, this);
-
+            g.drawImage(fondo01, fondo1, 0, this);
+            g.drawImage(fondo02, fondo2, 0, this);
+            g.drawImage(fondo03, fondo3, 0, this);
             //Objetos
             g.drawImage(carro.getImagen(), carro.getPosX(), carro.getPosY(), this);
             g.drawImage(hamburguesa.getImagen(), hamburguesa.getPosX(), hamburguesa.getPosY(), this);

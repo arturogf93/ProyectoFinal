@@ -1,0 +1,22 @@
+
+
+
+El objetivo principal del juego es juntar la maxima cantidad de puntos al 
+recoger las frutas que se van presentando en el camino evitando las frutas 
+podridas y saltando al niño y la anciana. 
+
+Puntos:
+Hamburguesa: 1
+Refresco: 2
+Zanahoria: 3
+Helado: 5
+Galleta: 10
+
+Existen dos tipos de enemigos las frutas podridas y el niño y la anciana. 
+Al acumular tres frutas podridas perderás el juego y los puntos se bajan 
+hasta cero. Al chocar con el niño o la anciana también perreras los puntos.
+
+Funciones que faltan:
+Tienda
+Creditos
+Menu

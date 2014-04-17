@@ -11,23 +11,11 @@ package proyectofinal;
  */
 public class Enemigo extends Base {
 
-    private int id;
     private int velocidad;
 
-    public Enemigo(int posX, int posY, Animacion anim, int id, int velocidad) {
+    public Enemigo(int posX, int posY, Animacion anim, int velocidad) {
         super(posX, posY, anim);
-        this.id = id;
         this.velocidad = velocidad;
-    }
-
-    //@param  id es para dar diferentes id a cada objeto de tipo <code>int</code>
-    public void setId(int id) {     //metodo para asignar valor a valor
-        this.id = id;
-    }
-
-    //@return    regresa el id de tipo <code>int</code>
-    public int getId() {              //metodo para obtener id
-        return this.id;
     }
 
     //@param  velocidad es para saber la velocidad de tipo <code>int</code>

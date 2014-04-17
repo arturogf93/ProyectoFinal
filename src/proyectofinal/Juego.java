@@ -37,6 +37,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image dbImage;              //Imagen para el doblebuffer 
     private long tiempoActual;          //Long para el tiempo del applet
 
+    private int[][] patron1 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700}, {400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}};
+
     private int fondo1;
     private int fondo2;
     private int fondo3;
@@ -46,6 +48,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int vidas;
     private int contvel;
     private int mov;
+    private int aleatorioEnemigo;
+    private int puntos;
+    private int randompodrido;
 
     private Carro carro;
 
@@ -53,8 +58,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private LinkedList<Podrida> podrida;
 
-    private Enemigo viejita;
-    private Enemigo niño;
+    private LinkedList<Enemigo> enemigos;
 
     private Image carrito;
     private Image fondo01;
@@ -69,7 +73,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean choquesonido;
     private boolean suelta;
     private boolean crearcomida;
-    private boolean mueve;
+    private boolean crearenemigo;
 
     private Animacion animC;            // animacion del carro
     private Animacion animH;
@@ -82,6 +86,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Animacion animP;
     private Animacion animV;
     private Animacion animN;
+    private Animacion eleccion;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -91,7 +96,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @throws java.io.IOException
      */
     public void init() throws IOException {
+        podrida = new LinkedList();
         comida = new LinkedList();
+        enemigos = new LinkedList();
         this.setSize(1200, 600);
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
@@ -107,7 +114,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         doublejump = false;
         suelta = true;
         inicio = false;
+        crearenemigo = false;
+        crearcomida = false;
 
+        aleatorioEnemigo = 0;
         vidas = 3;
         fondo1 = 0;
         fondo2 = 1200;
@@ -116,6 +126,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         gravedad = 3;
         score = 0;
         contvel = 0;
+        puntos = 1;
+        randompodrido = 0;
+
+        eleccion = new Animacion();
 
         animC = new Animacion();                //crea animacion del carro
         animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito1.png")), 80);
@@ -189,6 +203,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño5.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño6.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño7.png")), 80);
+
     }
 
     /**
@@ -252,29 +267,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     contvel = 0;
                 }
             }
-            
+
             //Crear comida
             if (crearcomida) {
                 int tipo = (int) (Math.random() * 25);
-                Animacion eleccion = animH;
-                int puntos = 1;
                 if (tipo >= 0 && tipo <= 11) {
                     eleccion = animH;
                     puntos = 1;
                 } else if (tipo >= 12 && tipo <= 17) {
                     eleccion = animCan;
                     puntos = 2;
-                } else if (tipo >= 18 && tipo <= 21 ) {
+                } else if (tipo >= 18 && tipo <= 21) {
                     eleccion = animZ;
                     puntos = 3;
                 } else if (tipo == 22 || tipo == 23) {
                     eleccion = animIce;
                     puntos = 5;
-                } else if (tipo == 24){
+                } else if (tipo == 24) {
                     eleccion = animCoo;
                     puntos = 7;
                 }
                 tipo = (int) (Math.random() * 8);
+                tipo = 1;
                 switch (tipo) {
                     case 0:
                         for (int i = 0; i < 10; i++) {
@@ -385,81 +399,125 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         comida.add(new Comida(1800, 520, eleccion, puntos));
                         break;
                 }
-            crearcomida = false;
-        }
-        //Actualizar comida
-        for (int i = 0; i < comida.size(); i++) {
-            Comida actual = comida.get(i);
-            actual.setPosX(actual.getPosX() - velocidad);
-            (actual.getImagenes()).actualiza(tiempoActual);
-            if (actual.getPosX() + actual.getWidth() < 0) {
-                comida.remove(i);
+                crearcomida = false;
             }
-        }
 
-        if (comida.isEmpty()) {
-            crearcomida = true;
-        }
-        //Actualiza Animaciones standalone
-        (carro.getImagenes()).actualiza(tiempoActual);
-        carro.setPosX(carro.getPosX() + mov);
-        if (carro.getPosX() < 0) {
-            carro.setPosX(0);
-        }
-        if (carro.getPosX() + carro.getWidth() > 1200) {
-            carro.setPosX(1200 - carro.getWidth());
-        }
-        //Actualizar fondo
-
-        fondo1 -= velocidad;
-        fondo2 -= velocidad;
-        fondo3 -= velocidad;
-        if (fondo1 <= -2400) {
-            fondo1 = 1200 - velocidad;
-        }
-        if (fondo2 <= -2400) {
-            fondo2 = 1200 - velocidad;
-        }
-        if (fondo3 <= -2400) {
-            fondo3 = 1200 - velocidad;
-        }
-        //Saltos
-        
-        if (jump || doublejump) {
-            if (carro.getSuelo()) {
-                jump = false;
-                doublejump = false;
+            //Actualizar comida
+            for (int i = 0; i < comida.size(); i++) {
+                Comida actual = comida.get(i);
+                actual.setPosX(actual.getPosX() - velocidad);
+                (actual.getImagenes()).actualiza(tiempoActual);
+                if (actual.getPosX() + actual.getWidth() < 0) {
+                    comida.remove(i);
+                }
             }
-            if (carro.getPosY() + carro.getVelY() >= 490) {
-                carro.setSuelo(true);
-                carro.setPosY(489);
-                carro.setVelY(0);
-            } else if (carro.getPosY() + carro.getVelY() <= 20) {
-                carro.setPosY(20);
-                carro.setVelY(carro.getVelY() + gravedad);
-            } else {
-                carro.setPosY(carro.getPosY() + carro.getVelY());
-                carro.setVelY(carro.getVelY() + gravedad);
-            }
-        }
 
-        if (vidas == 0) {
-            vidas = 3;
-            score = 0;
+            for (int i = 0; i < podrida.size(); i++) {
+                Podrida actual = podrida.get(i);
+                actual.setPosX(actual.getPosX() - velocidad);
+                (actual.getImagenes()).actualiza(tiempoActual);
+                if (actual.getPosX() + actual.getWidth() < 0) {
+                    podrida.remove(i);
+                }
+            }
+
+            if (comida.isEmpty()) {
+                crearcomida = true;
+            }
+
+            //Actualiza Carro
+            (carro.getImagenes()).actualiza(tiempoActual);
+            carro.setPosX(carro.getPosX() + mov);
+            if (carro.getPosX() < 0) {
+                carro.setPosX(0);
+            }
+            if (carro.getPosX() + carro.getWidth() > 1200) {
+                carro.setPosX(1200 - carro.getWidth());
+            }
+
+            //Crear enemigos
+            if (!crearenemigo && enemigos.size() < 2) {
+                aleatorioEnemigo = (int) (Math.random() * 80);
+                if (aleatorioEnemigo == 0) {
+                    crearenemigo = true;
+                }
+            }
+            if (crearenemigo) {
+                aleatorioEnemigo = (int) (Math.random() * 2);
+                if (aleatorioEnemigo == 0) {
+                    enemigos.add(new Enemigo(1200, 460, animV, velocidad + 1));
+                } else if (aleatorioEnemigo == 1) {
+                    enemigos.add(new Enemigo(1200, 480, animN, velocidad + 3));
+                }
+                crearenemigo = false;
+            }
+            //Actualiza enemigos
+            for (int i = 0; i < enemigos.size(); i++) {
+                Enemigo actual = enemigos.get(i);
+                actual.setPosX(actual.getPosX() - actual.getVelocidad());
+                (actual.getImagenes()).actualiza(tiempoActual);
+                if (actual.getPosX() + actual.getWidth() < 0) {
+                    enemigos.remove(i);
+                }
+            }
+
+            //Actualizar fondo
+            fondo1 -= velocidad;
+            fondo2 -= velocidad;
+            fondo3 -= velocidad;
+            if (fondo1 <= -2400) {
+                fondo1 = 1200 - velocidad;
+            }
+            if (fondo2 <= -2400) {
+                fondo2 = 1200 - velocidad;
+            }
+            if (fondo3 <= -2400) {
+                fondo3 = 1200 - velocidad;
+            }
+
+            //Saltos
+            if (jump || doublejump) {
+                if (carro.getSuelo()) {
+                    jump = false;
+                    doublejump = false;
+                }
+                if (carro.getPosY() + carro.getVelY() >= 490) {
+                    carro.setSuelo(true);
+                    carro.setPosY(489);
+                    carro.setVelY(0);
+                } else if (carro.getPosY() + carro.getVelY() <= 20) {
+                    carro.setPosY(20);
+                    carro.setVelY(carro.getVelY() + gravedad);
+                } else {
+                    carro.setPosY(carro.getPosY() + carro.getVelY());
+                    carro.setVelY(carro.getVelY() + gravedad);
+                }
+            }
+
+            //Se acaban las vidas
+            if (vidas == 0) {
+                vidas = 3;
+                score = 0;
+            }
         }
     }
-}
 
-/**
- * Metodo usado para checar las colisiones del objeto elefante y raton con las
- * orillas del <code>Applet</code>.
- */
-public void checaColision() {
+    /**
+     * Metodo usado para checar las colisiones del objeto elefante y raton con
+     * las orillas del <code>Applet</code>.
+     */
+    public void checaColision() {
         for (int i = 0; i < comida.size(); i++) {
             Comida actual = comida.get(i);
             if (actual.intersecta(carro)) {
                 score += actual.getValor();
                 comida.remove(i);
+            }
+        }
+        for (int i = 0; i < enemigos.size(); i++) {
+            Enemigo actual = enemigos.get(i);
+            if (actual.intersecta(carro)) {
+                enemigos.remove(i);
             }
         }
     }
@@ -510,11 +568,11 @@ public void checaColision() {
                 doublejump = true;
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             mov = velocidad;
         }
-        
-        if (e.getKeyCode() == KeyEvent.VK_LEFT){
+
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             mov = -velocidad;
         }
     }
@@ -547,13 +605,13 @@ public void checaColision() {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             suelta = true;
         }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             mov = 0;
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT){
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             mov = 0;
         }
-        
+
     }
 
     /**
@@ -576,6 +634,16 @@ public void checaColision() {
             g.drawImage(carro.getImagen(), carro.getPosX(), carro.getPosY(), this);
             for (int i = 0; i < comida.size(); i++) {
                 Comida actual = comida.get(i);
+                g.drawImage(actual.getImagen(), actual.getPosX(), actual.getPosY(), this);
+            }
+
+            for (int i = 0; i < podrida.size(); i++) {
+                Podrida actual = podrida.get(i);
+                g.drawImage(actual.getImagen(), actual.getPosX(), actual.getPosY(), this);
+            }
+
+            for (int i = 0; i < enemigos.size(); i++) {
+                Enemigo actual = enemigos.get(i);
                 g.drawImage(actual.getImagen(), actual.getPosX(), actual.getPosY(), this);
             }
 

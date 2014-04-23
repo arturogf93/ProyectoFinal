@@ -21,8 +21,14 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +43,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image dbImage;              //Imagen para el doblebuffer 
     private long tiempoActual;          //Long para el tiempo del applet
 
+    private Vector vec;
+
     private final int[][] patron0 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700}, {400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200}};
     private final int[][] patron1 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850}, {400, 380, 360, 340, 320, 300, 320, 340, 280, 260, 240, 220, 200}};
     private final int[][] patron2 = {{1250, 1290, 1330, 1370, 1410, 1450, 1490, 1530, 1570, 1610, 1650, 1690, 1730}, {100, 130, 160, 190, 220, 250, 280, 310, 340, 370, 400, 430, 460}};
@@ -45,7 +53,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private final int[][] patron5 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {400, 400, 400, 400, 400, 400, 200, 200, 200, 200, 200, 200}};
     private final int[][] patron6 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70}};
     private final int[][] patron7 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520}};
-    
+
     private int fondo1;
     private int fondo2;
     private int fondo3;
@@ -58,6 +66,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int aleatorioEnemigo;
     private int puntos;
     private int aleatorioPodrido;
+    private int total;
 
     private Carro carro;
 
@@ -71,6 +80,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image fondo01;
     private Image fondo02;
     private Image fondo03;
+    private Image fondo00;
 
     private boolean pausa;              //Booleando para pausa
     private boolean jump;
@@ -95,6 +105,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Animacion animN;
     private Animacion eleccion;
     private Animacion enem;
+    private Animacion animLamp;
+
+    private String archivoSave;
+    private String[] arr;    //Arreglo del archivo divido.
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -104,6 +118,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @throws java.io.IOException
      */
     public void init() throws IOException {
+        archivoSave = "Save.txt";
+        total = 0;
         podrida = new LinkedList();
         comida = new LinkedList();
         enemigos = new LinkedList();
@@ -115,6 +131,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo01 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo01.jpg"));
         fondo02 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo02.jpg"));
         fondo03 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo03.jpg"));
+        fondo00 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo00.jpg"));
         pausa = false;
         gameover = false;
         choquesonido = false;
@@ -130,13 +147,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo1 = 0;
         fondo2 = 1200;
         fondo3 = 2400;
-        velocidad = 2;
-        gravedad = 3;
+        velocidad = 3;
+        gravedad = 2;
         score = 0;
         contvel = 0;
         puntos = 1;
         aleatorioPodrido = 0;
-        
+
         eleccion = new Animacion();
         enem = new Animacion();
 
@@ -213,6 +230,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño6.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño7.png")), 80);
 
+        animLamp = new Animacion();                //crea animacion del carro
+        animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
     }
 
     /**
@@ -237,6 +256,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      *
      */
     public void run() {
+        try {
+            leerSave();
+        } catch (IOException ioe) {
+            System.out.println("Error en " + ioe.toString());
+        }
         while (true) {
             if (!pausa) {
                 try {
@@ -244,7 +268,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 } catch (IOException ex) {
                     Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                checaColision();
+                try {
+                    checaColision();
+                } catch (IOException ioe) {
+                    System.out.println("Error en " + ioe.toString());
+                }
             }
             repaint();    // Se actualiza el <code>Applet</code> repintando el contenido.
             try {
@@ -269,214 +297,20 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         if (!pausa && inicio) {
             // ACTUALIZA VELOCIDAD
-            if (velocidad < 10) {
+            if (velocidad < 18) {
                 contvel++;
                 if (contvel > 350) {
                     velocidad++;
                     contvel = 0;
+                    for (int i = 0; i < enemigos.size();i++){
+                        Enemigo actual = enemigos.get(i);
+                        actual.setVelocidad(actual.getVelocidad() + 1);
+                    }
                 }
             }
 
             //Crear comida
-            if (crearcomida) {
-                int tipo = (int) (Math.random() * 25);
-                if (tipo >= 0 && tipo <= 11) {
-                    eleccion = animH;
-                    puntos = 1;
-                } else if (tipo >= 12 && tipo <= 17) {
-                    eleccion = animCan;
-                    puntos = 2;
-                } else if (tipo >= 18 && tipo <= 21) {
-                    eleccion = animZ;
-                    puntos = 3;
-                } else if (tipo == 22 || tipo == 23) {
-                    eleccion = animIce;
-                    puntos = 5;
-                } else if (tipo == 24) {
-                    eleccion = animCoo;
-                    puntos = 7;
-                }
-                tipo = (int) (Math.random() * 8);
-                switch (tipo) {
-                    case 0:
-                        for (int i = 0; i < 20; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron0[0][i],patron0[1][i],enem));
-                            }
-                            else{
-                                comida.add(new Comida(patron0[0][i],patron0[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 1:
-                        for (int i = 0; i < 13; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron1[0][i],patron1[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron1[0][i],patron1[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 2:
-                        for (int i = 0; i < 13; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron2[0][i],patron2[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron2[0][i],patron2[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 3:
-                        for (int i = 0; i < 12; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron3[0][i],patron3[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron3[0][i],patron3[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 4:
-                        for (int i = 0; i < 12; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron4[0][i],patron4[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron4[0][i],patron4[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 5:
-                        for (int i = 0; i < 12; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron5[0][i],patron5[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron5[0][i],patron5[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 6:
-                        for (int i = 0; i < 12; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron6[0][i],patron6[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron6[0][i],patron6[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                    case 7:
-                        for (int i = 0; i < 12; i++){
-                            if ((int)(Math.random()*60)==0){
-                                aleatorioPodrido = (int)(Math.random()*3);
-                                switch (aleatorioPodrido){
-                                    case 0:
-                                        enem = animP;
-                                        break;
-                                    case 1:
-                                        enem = animQ;
-                                        break;
-                                    case 2:
-                                        enem = animF;
-                                        break;
-                                }
-                                podrida.add(new Podrida(patron7[0][i],patron7[1][i],animP));
-                            }
-                            else{
-                                comida.add(new Comida(patron7[0][i],patron7[1][i],eleccion,puntos));
-                            }
-                        }
-                        break;
-                }
-                crearcomida = false;
-            }
+            CrearComida();
 
             //Actualizar comida
             for (int i = 0; i < comida.size(); i++) {
@@ -512,21 +346,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
 
             //Crear enemigos
-            if (!crearenemigo && enemigos.size() < 2) {
-                aleatorioEnemigo = (int) (Math.random() * 80);
-                if (aleatorioEnemigo == 0) {
-                    crearenemigo = true;
-                }
-            }
-            if (crearenemigo) {
-                aleatorioEnemigo = (int) (Math.random() * 2);
-                if (aleatorioEnemigo == 0) {
-                    enemigos.add(new Enemigo(1200, 460, animV, velocidad + 1));
-                } else if (aleatorioEnemigo == 1) {
-                    enemigos.add(new Enemigo(1200, 480, animN, velocidad + 3));
-                }
-                crearenemigo = false;
-            }
+            CrearEnemigos();
+
             //Actualiza enemigos
             for (int i = 0; i < enemigos.size(); i++) {
                 Enemigo actual = enemigos.get(i);
@@ -572,7 +393,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //Se acaban las vidas
             if (vidas == 0) {
-                score = 0;
+                total += score;
                 inicio = false;
                 pausa = false;
                 score = 0;
@@ -583,6 +404,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 podrida.clear();
                 enemigos.clear();
                 velocidad = 2;
+                grabaSave();
             }
         }
     }
@@ -591,7 +413,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * Metodo usado para checar las colisiones del objeto elefante y raton con
      * las orillas del <code>Applet</code>.
      */
-    public void checaColision() {
+    public void checaColision() throws IOException {
         for (int i = 0; i < comida.size(); i++) {
             Comida actual = comida.get(i);
             if (actual.intersecta(carro)) {
@@ -602,6 +424,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < enemigos.size(); i++) {
             Enemigo actual = enemigos.get(i);
             if (actual.intersecta(carro)) {
+                total += score;
                 enemigos.remove(i);
                 inicio = false;
                 pausa = false;
@@ -613,6 +436,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 podrida.clear();
                 enemigos.clear();
                 velocidad = 2;
+                grabaSave();
             }
         }
         for (int i = 0; i < podrida.size(); i++) {
@@ -661,11 +485,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (!jump && !doublejump && carro.getSuelo()) {
-                carro.setVelY(-36);
+                carro.setVelY(-33);
                 jump = true;
                 carro.setSuelo(false);
             } else if (jump && !carro.getSuelo() && !doublejump) {
-                carro.setVelY(-36);
+                carro.setVelY(-24);
                 jump = false;
                 doublejump = true;
             }
@@ -675,7 +499,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            mov = -velocidad;
+            mov = -(velocidad);
         }
     }
 
@@ -729,6 +553,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setColor(Color.RED);
         if (carrito != null) {
             //Fondo
+            g.drawImage(fondo00, 0, 0, this);
             g.drawImage(fondo01, fondo1, 0, this);
             g.drawImage(fondo02, fondo2, 0, this);
             g.drawImage(fondo03, fondo3, 0, this);
@@ -754,6 +579,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.setFont(new Font("TimesRoman", Font.BOLD, 40));
             g.setColor(Color.BLACK);
             g.drawString("" + score, 25 + carrito.getWidth(this), 87);
+            g.drawString("" + total, 150 + carrito.getWidth(this), 87);
 
             //vidas
             g.drawString("" + vidas, this.getWidth() - 80, 87);
@@ -828,4 +654,246 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     }
 
+    public void leerSave() throws IOException {
+
+        BufferedReader fileIn;
+        try {
+            fileIn = new BufferedReader(new FileReader(archivoSave));
+        } catch (FileNotFoundException e) {
+            File save = new File(archivoSave);
+            PrintWriter fileOut = new PrintWriter(save);
+            fileOut.println("0");
+            fileOut.close();
+            fileIn = new BufferedReader(new FileReader(archivoSave));
+        }
+        String dato = fileIn.readLine();
+        while (dato != null) {
+
+            //arr = dato.split(",");
+            total = (Integer.parseInt(dato));
+            dato = fileIn.readLine();
+        }
+        fileIn.close();
+    }
+
+    public void grabaSave() throws IOException {
+
+        PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
+        fileOut.println(total);
+        fileOut.close();
+    }
+
+    public void CrearComida() {
+        if (crearcomida) {
+            int tipo = (int) (Math.random() * 25);
+            if (tipo >= 0 && tipo <= 11) {
+                eleccion = animH;
+                puntos = 1;
+            } else if (tipo >= 12 && tipo <= 17) {
+                eleccion = animCan;
+                puntos = 2;
+            } else if (tipo >= 18 && tipo <= 21) {
+                eleccion = animZ;
+                puntos = 3;
+            } else if (tipo == 22 || tipo == 23) {
+                eleccion = animIce;
+                puntos = 4;
+            } else if (tipo == 24) {
+                eleccion = animCoo;
+                puntos = 5;
+            }
+            tipo = (int) (Math.random() * 8);
+            switch (tipo) {
+                case 0:
+                    for (int i = 0; i < 20; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron0[0][i], patron0[1][i], enem));
+                        } else {
+                            comida.add(new Comida(patron0[0][i], patron0[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < 13; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron1[0][i], patron1[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron1[0][i], patron1[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < 13; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron2[0][i], patron2[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron2[0][i], patron2[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < 12; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron3[0][i], patron3[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron3[0][i], patron3[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < 12; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron4[0][i], patron4[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron4[0][i], patron4[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < 12; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron5[0][i], patron5[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron5[0][i], patron5[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 6:
+                    for (int i = 0; i < 12; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron6[0][i], patron6[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron6[0][i], patron6[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+                case 7:
+                    for (int i = 0; i < 12; i++) {
+                        if ((int) (Math.random() * 60) == 0) {
+                            aleatorioPodrido = (int) (Math.random() * 3);
+                            switch (aleatorioPodrido) {
+                                case 0:
+                                    enem = animP;
+                                    break;
+                                case 1:
+                                    enem = animQ;
+                                    break;
+                                case 2:
+                                    enem = animF;
+                                    break;
+                            }
+                            podrida.add(new Podrida(patron7[0][i], patron7[1][i], animP));
+                        } else {
+                            comida.add(new Comida(patron7[0][i], patron7[1][i], eleccion, puntos));
+                        }
+                    }
+                    break;
+            }
+            crearcomida = false;
+        }
+    }
+
+    public void CrearEnemigos() {
+        if (!crearenemigo && enemigos.size() < 2) {
+            aleatorioEnemigo = (int) (Math.random() * 80);
+            if (aleatorioEnemigo == 0) {
+                crearenemigo = true;
+            }
+        }
+        if (crearenemigo) {
+            aleatorioEnemigo = (int) (Math.random() * ((int) (3+(4-velocidad/4))));
+            if (aleatorioEnemigo == 0) {
+                enemigos.add(new Enemigo(1200, 460, animV, velocidad + 1));
+            } else if (aleatorioEnemigo == 1) {
+                enemigos.add(new Enemigo(1200, 480, animN, velocidad + 3));
+            } else if (aleatorioEnemigo == 2 && score > 100) {
+                enemigos.add(new Enemigo(1200, 30, animLamp, velocidad));
+            }
+            crearenemigo = false;
+        }
+    }
 }

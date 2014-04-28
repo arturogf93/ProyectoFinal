@@ -65,6 +65,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int menuY;
     private int velTransicionX;
     private int velTransicionY;
+    private int auxfood;
 
     private Carro carro;
 
@@ -122,7 +123,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean doublejump;
     private boolean inicio;
     private boolean gameover;
-    private boolean choquesonido;
+    private boolean sound;
     private boolean suelta;
     private boolean crearcomida;
     private boolean crearenemigo;
@@ -155,10 +156,22 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private String archivoSave;
     private String archivoHighscores;
+    private String nombre;
 
     private String[] arr;
     private String[] arrNombres;
     private int[] arrScores;
+    
+    private SoundClip musicaMenu;
+    private SoundClip musicaJuego;
+    private SoundClip musicaGameover;
+    private SoundClip food1;
+    private SoundClip food2;
+    private SoundClip badFood;
+    private SoundClip ida;
+    private SoundClip vuelta;
+    private SoundClip brinco;
+    private SoundClip brinco2;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -168,6 +181,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @throws java.io.IOException
      */
     public void init() throws IOException {
+        auxfood = 0;
         arrNombres = new String[10];
         arrScores = new int[10];
         arr = new String[20];
@@ -231,7 +245,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         transicion = false;
         pausa = false;
         gameover = false;
-        choquesonido = false;
+        sound = true;
         jump = false;
         doublejump = false;
         suelta = true;
@@ -343,6 +357,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         animLamp = new Animacion();                //crea animacion del carro
         animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
+        musicaMenu = new SoundClip("Sounds/Menu.wav");
+        musicaJuego = new SoundClip("Sounds/Juego.wav");
+        musicaGameover = new SoundClip("Sounds/Gameover.wav");
+        food1 = new SoundClip("Sounds/coin1.wav");
+        food2 = new SoundClip("Sounds/coin2.wav");
+        badFood = new SoundClip("Sounds/mala.wav");
+        ida = new SoundClip("Sounds/ida.wav");
+        vuelta = new SoundClip("Sounds/vuelta.wav");
+        brinco = new SoundClip("Sounds/brinco.wav");
+        brinco2 = new SoundClip("Sounds/brinco.wav");
     }
 
     /**
@@ -412,6 +436,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         tiempoActual += tiempoTranscurrido;
 
         if (!pausa && inicio) {
+            if (sound){
+                musicaMenu.stop();
+                musicaMenu.restart();
+                musicaJuego.play2();
+            }else{
+                musicaJuego.stop();
+                musicaMenu.stop();
+                musicaMenu.restart();
+            }
 
             // ACTUALIZA VELOCIDAD
             if (velocidad < 18) {
@@ -510,6 +543,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //Se acaban las vidas
             if (vidas == 0) {
+                if (sound){
+                    musicaJuego.stop();
+                    musicaJuego.restart();
+                    musicaGameover.play2();
+                }else{
+                    musicaJuego.stop();
+                    musicaJuego.restart();
+                    musicaGameover.stop();
+                }
                 mov = 0;
                 total += score;
                 pausa = false;
@@ -519,14 +561,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 comida.clear();
                 podrida.clear();
                 enemigos.clear();
-                velocidad = 2;
-                menu = true;
+                velocidad = 3;
+                menu = false;
                 if (score > arrScores[9]) {
-                    String nombre = JOptionPane.showInputDialog("Entraste entre los mejores 10...Cual es tu nombre?");
+                    do {
+                        nombre = JOptionPane.showInputDialog("Entraste entre los mejores 10...Cual es tu nombre?");
+                    } while (nombre == null);
                     JOptionPane.showMessageDialog(null,
                             "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
                             JOptionPane.PLAIN_MESSAGE);
-                    grabaHighscores(nombre);
+                    grabaHighscores();
                 }
                 score = 0;
                 grabaSave();
@@ -552,6 +596,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //MANEJO DEL MENU
         if (menu) {
+            if (sound){
+                musicaMenu.play2();
+            }else{
+                musicaMenu.stop();
+            }
             if (principal && transicion) {
                 if (creditos) {
                     menuX += velTransicionX;
@@ -671,6 +720,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < comida.size(); i++) {
             Comida actual = comida.get(i);
             if (actual.intersecta(carro)) {
+                if (auxfood==0&&sound){
+                    food1.play();
+                    auxfood++;
+                }
+                else if (sound){
+                    food2.play();
+                    auxfood = 0;
+                }
                 score += actual.getValor();
                 comida.remove(i);
             }
@@ -684,6 +741,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < podrida.size(); i++) {
             Podrida actual = podrida.get(i);
             if (actual.intersecta(carro)) {
+                if (sound){
+                    badFood.play();
+                }
                 vidas--;
                 podrida.remove(i);
             }
@@ -727,10 +787,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (!jump && !doublejump && carro.getSuelo()) {
+                if (sound){
+                    brinco.play();
+                }
                 carro.setVelY(-33);
                 jump = true;
                 carro.setSuelo(false);
             } else if (jump && !carro.getSuelo() && !doublejump) {
+                if (sound){
+                    brinco2.play();
+                }
                 carro.setVelY(-24);
                 jump = false;
                 doublejump = true;
@@ -769,6 +835,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_P && jugar) {
             pausa = !pausa;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            sound = !sound;
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             suelta = true;
@@ -888,42 +957,66 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     menu = false;
                 }
                 if (bCreditos.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        ida.play();
+                    }
                     transicion = true;
                     creditos = true;
                 }
                 if (bTienda.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        ida.play();
+                    }
                     transicion = true;
                     tienda = true;
                 }
                 if (bInst.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        ida.play();
+                    }
                     transicion = true;
                     instrucciones = true;
                 }
                 if (bScore.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        ida.play();
+                    }
                     transicion = true;
                     highscores = true;
                 }
             }
             if (creditos) {
                 if (bDer.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        vuelta.play();
+                    }
                     regreso = true;
                     principal = true;
                 }
             }
             if (tienda) {
                 if (bIzq.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        vuelta.play();
+                    }
                     regreso = true;
                     principal = true;
                 }
             }
             if (instrucciones) {
                 if (bAbajo.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        vuelta.play();
+                    }
                     regreso = true;
                     principal = true;
                 }
             }
             if (highscores) {
                 if (bArriba.dentro(e.getX(), e.getY())) {
+                    if (sound){
+                        vuelta.play();
+                    }
                     regreso = true;
                     principal = true;
                 }
@@ -939,15 +1032,27 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 restart.setPosY(760);
                 cuadroOver.setPosY(660);
                 gameover = false;
+                musicaJuego.stop();
+                musicaJuego.restart();
+                musicaMenu.stop();
+                musicaMenu.restart();
+                musicaGameover.stop();
+                musicaGameover.restart();
             }
 
             if (restart.dentro(e.getX(), e.getY())) {
                 inicio = true;
                 jugar = true;
-                casita.setPosY(800);
-                restart.setPosY(800);
+                casita.setPosY(760);
+                restart.setPosY(760);
                 cuadroOver.setPosY(660);
                 gameover = false;
+                musicaJuego.stop();
+                musicaJuego.restart();
+                musicaMenu.stop();
+                musicaMenu.restart();
+                musicaGameover.stop();
+                musicaGameover.restart();
             }
         }
 
@@ -1121,7 +1226,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fileIn.close();
     }
 
-    public void grabaHighscores(String nombre) throws IOException {
+    public void grabaHighscores() throws IOException {
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoHighscores));
         String[] auxNombres = new String[10];
         int[] auxScores = new int[10];
@@ -1149,6 +1254,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         fileOut.println(arrNombres[0] + "," + arrScores[0] + "," + arrNombres[1] + "," + arrScores[1] + "," + arrNombres[2] + "," + arrScores[2] + "," + arrNombres[3] + "," + arrScores[3] + "," + arrNombres[4] + "," + arrScores[4] + "," + arrNombres[5] + "," + arrScores[5] + "," + arrNombres[6] + "," + arrScores[6] + "," + arrNombres[7] + "," + arrScores[7] + "," + arrNombres[8] + "," + arrScores[8] + "," + arrNombres[9] + "," + arrScores[9]);
         fileOut.close();
+        nombre = null;
     }
 
     public void CrearComida() {

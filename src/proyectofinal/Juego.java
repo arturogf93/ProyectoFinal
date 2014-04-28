@@ -67,7 +67,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int puntos;
     private int aleatorioPodrido;
     private int total;
-
+    private int menuX;
+    private int menuY;
+    private int velTransicionX;
+    private int velTransicionY;
+    
     private Carro carro;
 
     private LinkedList<Comida> comida;
@@ -81,6 +85,36 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image fondo02;
     private Image fondo03;
     private Image fondo00;
+    private Image menuPrincipal;
+
+    private Image creditosN;
+    private Image creditosS;
+    private Image instN;
+    private Image instS;
+    private Image tiendaN;
+    private Image tiendaS;
+    private Image scoreN;
+    private Image scoreS;
+    private Image playN;
+    private Image playS;
+    private Image abajoN;
+    private Image abajoS;
+    private Image arribaN;
+    private Image arribaS;
+    private Image derN;
+    private Image derS;
+    private Image izqN;
+    private Image izqS;
+
+    private Boton bCreditos;
+    private Boton bInst;
+    private Boton bTienda;
+    private Boton bScore;
+    private Boton bPlay;
+    private Boton bArriba;
+    private Boton bAbajo;
+    private Boton bDer;
+    private Boton bIzq;
 
     private boolean pausa;              //Booleando para pausa
     private boolean jump;
@@ -91,8 +125,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean suelta;
     private boolean crearcomida;
     private boolean crearenemigo;
+    private boolean menu;
+    private boolean principal;
+    private boolean instrucciones;
+    private boolean creditos;
+    private boolean tienda;
+    private boolean highscores;
+    private boolean jugar;
+    private boolean transicion;
+    private boolean regreso;
 
-    private Animacion animC;            // animacion del carro
+    private Animacion animC1;
+    private Animacion animC2;
+    private Animacion animC3;
     private Animacion animH;
     private Animacion animCan;
     private Animacion animZ;
@@ -129,9 +174,43 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addMouseMotionListener(this);      //Uso de las teclas
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Cart.png"));
         fondo01 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo01.jpg"));
-        fondo02 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo02.jpg"));
-        fondo03 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo03.jpg"));
-        fondo00 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo00.jpg"));
+        fondo02 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo02.png"));
+        fondo03 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo03.png"));
+        fondo00 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo00.png"));
+        menuPrincipal = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/MenuPrincipal.png"));
+
+        creditosN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditos.png"));
+        creditosS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditosSel.png"));
+        tiendaN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/tienda.png"));
+        tiendaS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/tiendaSel.png"));
+        playN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/jugar.png"));
+        playS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/jugarSel.png"));
+        instN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/instrucciones.png"));
+        instS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/instruccionesSel.png"));
+        scoreN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/puntuaciones.png"));
+        scoreS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/puntuacionesSel.png"));
+        
+        abajoN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuabajo1.png"));
+        abajoS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuabajo2.png"));
+        arribaN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuarriba1.png"));
+        arribaS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuarriba2.png"));
+        derN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuder1.png"));
+        derS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuder2.png"));
+        izqN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuizq1.png"));
+        izqS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuizq2.png"));
+        
+        bCreditos = new Boton(25, 250, creditosN);
+        bTienda = new Boton(1000, 250, tiendaN);
+        bPlay = new Boton(515, 350, playN);
+        bInst = new Boton(460, 25, instN);
+        bScore = new Boton(460, 460, scoreN);
+        bAbajo = new Boton (1100, -115,abajoN);
+        bArriba = new Boton (1100,635,arribaN);
+        bDer = new Boton (-120,500,derN);
+        bIzq = new Boton (1220,500,izqN);
+
+        regreso = false;
+        transicion = false;
         pausa = false;
         gameover = false;
         choquesonido = false;
@@ -141,6 +220,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         inicio = false;
         crearenemigo = false;
         crearcomida = false;
+        menu = true;
+        principal = true;
+        creditos = false;
+        highscores = false;
+        instrucciones = false;
+        tienda = false;
 
         aleatorioEnemigo = 0;
         vidas = 3;
@@ -153,18 +238,26 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         contvel = 0;
         puntos = 1;
         aleatorioPodrido = 0;
+        menuX = -1200;
+        menuY = -600;
+        velTransicionY = 20;
+        velTransicionX = 40;
 
         eleccion = new Animacion();
         enem = new Animacion();
 
-        animC = new Animacion();                //crea animacion del carro
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito1.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito2.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito3.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito4.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito5.png")), 80);
-        animC.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Carrito6.png")), 80);
-        carro = new Carro(50, 490, animC, 0);
+        animC1 = new Animacion();                //crea animacion del carro
+        animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_1.png")), 100);
+        animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
+        carro = new Carro(50, 490, animC1, 0);
+
+        animC2 = new Animacion();                //crea animacion del carro
+        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_1.png")), 100);
+        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_2.png")), 100);
+
+        animC2 = new Animacion();                //crea animacion del carro
+        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_1.png")), 100);
+        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png")), 100);
 
         animH = new Animacion();
         animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer1.png")), 50);
@@ -302,7 +395,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (contvel > 350) {
                     velocidad++;
                     contvel = 0;
-                    for (int i = 0; i < enemigos.size();i++){
+                    for (int i = 0; i < enemigos.size(); i++) {
                         Enemigo actual = enemigos.get(i);
                         actual.setVelocidad(actual.getVelocidad() + 1);
                     }
@@ -405,6 +498,126 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 enemigos.clear();
                 velocidad = 2;
                 grabaSave();
+            }
+
+            if (score < 75) {
+                carro.setImagenes(animC1);
+            } else if (score >= 75 && score < 150) {
+                carro.setImagenes(animC2);
+            } else if (score <= 150) {
+                carro.setImagenes(animC3);
+            }
+        }
+        
+        //MANEJO DEL MENU
+        if (menu){
+            if (principal&&transicion){
+                if (creditos){
+                    menuX+=velTransicionX;
+                    bPlay.setPosX(bPlay.getPosX()+velTransicionX);
+                    bCreditos.setPosX(bCreditos.getPosX()+velTransicionX);
+                    bInst.setPosX(bInst.getPosX()+velTransicionX);
+                    bTienda.setPosX(bTienda.getPosX()+velTransicionX);
+                    bScore.setPosX(bScore.getPosX()+velTransicionX);
+                    bDer.setPosX(bDer.getPosX()+velTransicionX);
+                    if (menuX >= 0){
+                        transicion = false;
+                        principal = false;
+                    }
+                }
+                if (tienda){
+                    menuX-=velTransicionX;
+                    bPlay.setPosX(bPlay.getPosX()-velTransicionX);
+                    bCreditos.setPosX(bCreditos.getPosX()-velTransicionX);
+                    bInst.setPosX(bInst.getPosX()-velTransicionX);
+                    bTienda.setPosX(bTienda.getPosX()-velTransicionX);
+                    bScore.setPosX(bScore.getPosX()-velTransicionX);
+                    bIzq.setPosX(bIzq.getPosX()-velTransicionX);
+                    if (menuX <= -2400){
+                        transicion = false;
+                        principal = false;
+                    }
+                }
+                if (instrucciones){
+                    menuY+=velTransicionY;
+                    bPlay.setPosY(bPlay.getPosY()+velTransicionY);
+                    bCreditos.setPosY(bCreditos.getPosY()+velTransicionY);
+                    bInst.setPosY(bInst.getPosY()+velTransicionY);
+                    bTienda.setPosY(bTienda.getPosY()+velTransicionY);
+                    bScore.setPosY(bScore.getPosY()+velTransicionY);
+                    bAbajo.setPosY(bAbajo.getPosY()+velTransicionY);
+                    if (menuY >= 0){
+                        transicion = false;
+                        principal = false;
+                    }
+                }
+                if (highscores){
+                    menuY-=velTransicionY;
+                    bPlay.setPosY(bPlay.getPosY()-velTransicionY);
+                    bCreditos.setPosY(bCreditos.getPosY()-velTransicionY);
+                    bInst.setPosY(bInst.getPosY()-velTransicionY);
+                    bTienda.setPosY(bTienda.getPosY()-velTransicionY);
+                    bScore.setPosY(bScore.getPosY()-velTransicionY);
+                    bArriba.setPosY(bArriba.getPosY()-velTransicionY);
+                    if (menuY <= -1200 ){
+                        transicion = false;
+                        principal = false;
+                    }
+                }
+            }
+            if (principal&&regreso){
+                if (creditos){
+                    menuX-=velTransicionX;
+                    bPlay.setPosX(bPlay.getPosX()-velTransicionX);
+                    bCreditos.setPosX(bCreditos.getPosX()-velTransicionX);
+                    bInst.setPosX(bInst.getPosX()-velTransicionX);
+                    bTienda.setPosX(bTienda.getPosX()-velTransicionX);
+                    bScore.setPosX(bScore.getPosX()-velTransicionX);
+                    bDer.setPosX(bDer.getPosX()-velTransicionX);
+                    if (menuX <= -1200){
+                        regreso = false;
+                        creditos = false;
+                    }
+                }
+                if (tienda){
+                    menuX+=velTransicionX;
+                    bPlay.setPosX(bPlay.getPosX()+velTransicionX);
+                    bCreditos.setPosX(bCreditos.getPosX()+velTransicionX);
+                    bInst.setPosX(bInst.getPosX()+velTransicionX);
+                    bTienda.setPosX(bTienda.getPosX()+velTransicionX);
+                    bScore.setPosX(bScore.getPosX()+velTransicionX);
+                    bIzq.setPosX(bIzq.getPosX()+velTransicionX);
+                    if (menuX >= -1200){
+                        regreso = false;
+                        tienda = false;
+                    }
+                }
+                if (instrucciones){
+                    menuY-=velTransicionY;
+                    bPlay.setPosY(bPlay.getPosY()-velTransicionY);
+                    bCreditos.setPosY(bCreditos.getPosY()-velTransicionY);
+                    bInst.setPosY(bInst.getPosY()-velTransicionY);
+                    bTienda.setPosY(bTienda.getPosY()-velTransicionY);
+                    bScore.setPosY(bScore.getPosY()-velTransicionY);
+                    bAbajo.setPosY(bAbajo.getPosY()-velTransicionY);
+                    if (menuY <= -600){
+                        regreso = false;
+                        instrucciones = false;
+                    }
+                }
+                if (highscores){
+                    menuY+=velTransicionY;
+                    bPlay.setPosY(bPlay.getPosY()+velTransicionY);
+                    bCreditos.setPosY(bCreditos.getPosY()+velTransicionY);
+                    bInst.setPosY(bInst.getPosY()+velTransicionY);
+                    bTienda.setPosY(bTienda.getPosY()+velTransicionY);
+                    bScore.setPosY(bScore.getPosY()+velTransicionY);
+                    bArriba.setPosY(bArriba.getPosY()+velTransicionY);
+                    if (menuY >= -600 ){
+                        regreso = false;
+                        highscores = false;
+                    }
+                }
             }
         }
     }
@@ -525,7 +738,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @param e es el <code>evento</code> que se genera en al soltar las teclas.
      */
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
+        if (e.getKeyCode() == KeyEvent.VK_P&&jugar) {
             pausa = !pausa;
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -551,7 +764,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void paint1(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         g.setColor(Color.RED);
-        if (carrito != null) {
+        if (jugar) {
             //Fondo
             g.drawImage(fondo00, 0, 0, this);
             g.drawImage(fondo01, fondo1, 0, this);
@@ -583,6 +796,27 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //vidas
             g.drawString("" + vidas, this.getWidth() - 80, 87);
+        } else if (menu) {
+            g.drawImage(menuPrincipal, menuX, menuY, this);
+            if (principal) {
+                g.drawImage(bCreditos.getImagen(), bCreditos.getPosX(), bCreditos.getPosY(), this);
+                g.drawImage(bTienda.getImagen(), bTienda.getPosX(), bTienda.getPosY(), this);
+                g.drawImage(bPlay.getImagen(), bPlay.getPosX(), bPlay.getPosY(), this);
+                g.drawImage(bInst.getImagen(), bInst.getPosX(), bInst.getPosY(), this);
+                g.drawImage(bScore.getImagen(), bScore.getPosX(), bScore.getPosY(), this);
+            }
+            if (creditos){
+                g.drawImage(bDer.getImagen(), bDer.getPosX(), bDer.getPosY(), this);
+            }
+            if (tienda){
+                g.drawImage(bIzq.getImagen(), bIzq.getPosX(), bIzq.getPosY(), this);
+            }
+            if (instrucciones){
+                g.drawImage(bAbajo.getImagen(), bAbajo.getPosX(), bAbajo.getPosY(), this);
+            }
+            if (highscores){
+                g.drawImage(bArriba.getImagen(), bArriba.getPosX(), bArriba.getPosY(), this);
+            }
         } else {
             //Da un mensaje mientras se carga el dibujo	
             g.drawString("No se cargo la imagen..", 20, 20);
@@ -595,18 +829,64 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * algun componente. e es el evento generado al hacer click con el mouse.
      */
     public void mouseClicked(MouseEvent e) {
-        if (carro.dentro(e.getX(), e.getY())) {
-            inicio = true;
-            crearcomida = true;
+        if (menu) {
+            if (principal){
+                if (bPlay.dentro(e.getX(), e.getY())) {
+                    inicio = true;
+                    crearcomida = true;
+                    jugar = true;
+                    menu = false;
+                }
+                if (bCreditos.dentro(e.getX(), e.getY())) {
+                    transicion = true;
+                    creditos = true;
+                }
+                if (bTienda.dentro(e.getX(), e.getY())) {
+                    transicion = true;
+                    tienda = true;
+                }
+                if (bInst.dentro(e.getX(), e.getY())) {
+                    transicion = true;
+                    instrucciones = true;
+                }
+                if (bScore.dentro(e.getX(), e.getY())) {
+                    transicion = true;
+                    highscores = true;
+                }
+            }
+            if (creditos){
+                if (bDer.dentro(e.getX(), e.getY())) {
+                    regreso = true;
+                    principal = true;
+                }
+            }
+            if (tienda){
+                if (bIzq.dentro(e.getX(), e.getY())) {
+                    regreso = true;
+                    principal = true;
+                }
+            }
+            if (instrucciones){
+                if (bAbajo.dentro(e.getX(), e.getY())) {
+                    regreso = true;
+                    principal = true;
+                }
+            }
+            if (highscores){
+                if (bArriba.dentro(e.getX(), e.getY())) {
+                    regreso = true;
+                    principal = true;
+                }
+            }
         }
+        
     }
-
-    /**
-     * Metodo mouseEntered sobrescrito de la interface MouseListener. En este
-     * metodo maneja el evento que se genera cuando el mouse entra en algun
-     * componente. e es el evento generado cuando el mouse entra en algun
-     * componente.
-     */
+        /**
+         * Metodo mouseEntered sobrescrito de la interface MouseListener. En
+         * este metodo maneja el evento que se genera cuando el mouse entra en
+         * algun componente. e es el evento generado cuando el mouse entra en
+         * algun componente.
+         */
     public void mouseEntered(MouseEvent e) {
     }
 
@@ -651,7 +931,67 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * este metodo maneja el evento que se genera al mover el mouse
      */
     public void mouseMoved(MouseEvent e) {
+        if (menu) {
+            if (principal){
+                if (bCreditos.dentro(e.getX(), e.getY())) {
+                    bCreditos.setImagen(creditosS);
+                } else {
+                    bCreditos.setImagen(creditosN);
+                }
 
+                if (bTienda.dentro(e.getX(), e.getY())) {
+                    bTienda.setImagen(tiendaS);
+                } else {
+                    bTienda.setImagen(tiendaN);
+                }
+
+                if (bInst.dentro(e.getX(), e.getY())) {
+                    bInst.setImagen(instS);
+                } else {
+                    bInst.setImagen(instN);
+                }
+
+                if (bPlay.dentro(e.getX(), e.getY())) {
+                    bPlay.setImagen(playS);
+                } else {
+                    bPlay.setImagen(playN);
+                }
+
+                if (bScore.dentro(e.getX(), e.getY())) {
+                    bScore.setImagen(scoreS);
+                } else {
+                    bScore.setImagen(scoreN);
+                }
+            }
+            if (creditos){
+                if (bDer.dentro(e.getX(), e.getY())) {
+                    bDer.setImagen(derS);
+                } else {
+                    bDer.setImagen(derN);
+                }
+            }
+            if (tienda){
+                if (bIzq.dentro(e.getX(), e.getY())) {
+                    bIzq.setImagen(izqS);
+                } else {
+                    bIzq.setImagen(izqN);
+                }
+            }
+            if (instrucciones){
+                if (bAbajo.dentro(e.getX(), e.getY())) {
+                    bAbajo.setImagen(abajoS);
+                } else {
+                    bAbajo.setImagen(abajoN);
+                }
+            }
+            if (highscores){
+                if (bArriba.dentro(e.getX(), e.getY())) {
+                    bArriba.setImagen(arribaS);
+                } else {
+                    bArriba.setImagen(arribaN);
+                }
+            }
+        }
     }
 
     public void leerSave() throws IOException {
@@ -885,7 +1225,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
         if (crearenemigo) {
-            aleatorioEnemigo = (int) (Math.random() * ((int) (3+(4-velocidad/4))));
+            aleatorioEnemigo = (int) (Math.random() * ((int) (3 + (4 - velocidad / 4))));
             if (aleatorioEnemigo == 0) {
                 enemigos.add(new Enemigo(1200, 460, animV, velocidad + 1));
             } else if (aleatorioEnemigo == 1) {

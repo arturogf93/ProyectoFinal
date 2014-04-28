@@ -13,18 +13,18 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Base extends Animacion {
+public class Boton{
 
     private int posX;                   //posicion de x del objeto
     private int posY;                   //posicion de y del objeto
-    protected Animacion imagenes;       //Objeto de tipo animacion
+    protected Image imagen;       //Objeto de tipo animacion
 
     //@param  posX es para saber la posicion x de tipo <code>int</code>
     //@param  posY es para saber la posicion y detipo <code>int</code>
-    public Base(int posX, int posY, Animacion anim) { //constructor 
+    public Boton(int posX, int posY, Image imag) { //constructor 
         this.posX = posX;
         this.posY = posY;
-        imagenes = anim;
+        this.imagen = imag;
 
     }
 
@@ -50,22 +50,22 @@ public class Base extends Animacion {
 
     //@return    regresa el ancho de tipo <code>int</code>
     public int getWidth() {             //metodo para obtener valor a width
-        return (new ImageIcon(imagenes.getImagen())).getIconWidth();
+        return (new ImageIcon(imagen)).getIconWidth();
     }
 
     //@return    regresa el alto de tipo <code>int</code>
     public int getHeight() {            //metodo para obtener valor a height
-        return (new ImageIcon(imagenes.getImagen())).getIconHeight();
+        return (new ImageIcon(imagen)).getIconHeight();
     }
 
-    //@return    regresa imagenes de tipo <code>Animacion</code>
-    public Animacion getImagenes() {    //metodo para obtener la animacion del objeto
-        return this.imagenes;
+    //@return    regresa imagenes de tipo <code>Image</code>
+    public Image getImagen() {    //metodo para obtener la animacion del objeto
+        return this.imagen;
     }
     
      //@param    anim es la animacion nueva <code>Animacion</code>
-    public void setImagenes(Animacion anim) {    //metodo para obtener la animacion del objeto
-        this.imagenes = anim;
+    public void setImagen(Image imag) {    //metodo para obtener la animacion del objeto
+        this.imagen = imag;
     }
     
     //@return    regresa el area de la imagen de tipo <code>Rectangle</code>
@@ -75,13 +75,8 @@ public class Base extends Animacion {
 
     //@param  obj es para conocer el objeto con el que se checara si se intersectade tipo <code>Base</code>
     //@return    regresa booleano de si choca o no de tipo <code>Boolean</code>
-    public boolean intersecta(Base obj) {   //metodo para saber si chocaron dos objetos
+    public boolean intersecta(Boton obj) {   //metodo para saber si chocaron dos objetos
         return getPerimetro().intersects(obj.getPerimetro());
-    }
-
-    //@return    regresa la imagen actual de la animacion  de tipo <code>Image</code>
-    public Image getImagen() {              //metodo para obtener la imagen acutal
-        return (this.getImagenes()).getImagen();
     }
 
     //@param  x es para conocer la posicion d x del punto tipo <code>int</code>

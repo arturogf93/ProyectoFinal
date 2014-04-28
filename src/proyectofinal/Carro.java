@@ -39,5 +39,4 @@ public class Carro extends Base {
     public boolean getSuelo() {              //metodo para obtener suelo
         return this.suelo;
     }
-
 }

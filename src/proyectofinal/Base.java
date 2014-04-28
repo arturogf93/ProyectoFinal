@@ -62,12 +62,12 @@ public class Base extends Animacion {
     public Animacion getImagenes() {    //metodo para obtener la animacion del objeto
         return this.imagenes;
     }
-    
-     //@param    anim es la animacion nueva <code>Animacion</code>
+
+    //@param    anim es la animacion nueva <code>Animacion</code>
     public void setImagenes(Animacion anim) {    //metodo para obtener la animacion del objeto
         this.imagenes = anim;
     }
-    
+
     //@return    regresa el area de la imagen de tipo <code>Rectangle</code>
     public Rectangle getPerimetro() {   //metodo para obtener un rectangulo de la imagen actual
         return new Rectangle(getPosX(), getPosY(), getWidth(), getHeight());

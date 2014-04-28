@@ -13,7 +13,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Boton{
+public class Boton {
 
     private int posX;                   //posicion de x del objeto
     private int posY;                   //posicion de y del objeto
@@ -62,12 +62,12 @@ public class Boton{
     public Image getImagen() {    //metodo para obtener la animacion del objeto
         return this.imagen;
     }
-    
-     //@param    anim es la animacion nueva <code>Animacion</code>
+
+    //@param    anim es la animacion nueva <code>Animacion</code>
     public void setImagen(Image imag) {    //metodo para obtener la animacion del objeto
         this.imagen = imag;
     }
-    
+
     //@return    regresa el area de la imagen de tipo <code>Rectangle</code>
     public Rectangle getPerimetro() {   //metodo para obtener un rectangulo de la imagen actual
         return new Rectangle(getPosX(), getPosY(), getWidth(), getHeight());

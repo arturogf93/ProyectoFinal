@@ -208,11 +208,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         izqN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuizq1.png"));
         izqS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuizq2.png"));
         corazon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Corazon.png"));
-        
+
         home = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/casita.png"));
         flecha = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/restart.png"));
         cuadrillo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/gameover.png"));
-        
+
         bCreditos = new Boton(25, 250, creditosN);
         bTienda = new Boton(1000, 250, tiendaN);
         bPlay = new Boton(515, 350, playN);
@@ -222,10 +222,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         bArriba = new Boton(1100, 635, arribaN);
         bDer = new Boton(-120, 500, derN);
         bIzq = new Boton(1220, 500, izqN);
-        
-        casita = new Boton(600-160, 760, home);
+
+        casita = new Boton(600 - 160, 760, home);
         restart = new Boton(630, 760, flecha);
-        cuadroOver = new Boton(600-300, 660, cuadrillo);
+        cuadroOver = new Boton(600 - 300, 660, cuadrillo);
 
         regreso = false;
         transicion = false;
@@ -412,7 +412,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         tiempoActual += tiempoTranscurrido;
 
         if (!pausa && inicio) {
-            
+
             // ACTUALIZA VELOCIDAD
             if (velocidad < 18) {
                 contvel++;
@@ -521,11 +521,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 enemigos.clear();
                 velocidad = 2;
                 menu = true;
-                if (score > arrScores[9]){
+                if (score > arrScores[9]) {
                     String nombre = JOptionPane.showInputDialog("Entraste entre los mejores 10...Cual es tu nombre?");
-                    JOptionPane.showMessageDialog(null, 
-                                  "El puntaje de " + nombre + " es: " + score, "PUNTAJE", 
-                                  JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
+                            JOptionPane.PLAIN_MESSAGE);
                     grabaHighscores(nombre);
                 }
                 score = 0;
@@ -541,16 +541,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 carro.setImagenes(animC3);
             }
         }
-        
-        if (gameover){
-            if (cuadroOver.getPosY()>=(300-(cuadroOver.getHeight()/2))){
-                casita.setPosY(casita.getPosY()-velTransicionY);
-                restart.setPosY(restart.getPosY()-velTransicionY);
-                cuadroOver.setPosY(cuadroOver.getPosY()-velTransicionY);
+
+        if (gameover) {
+            if (cuadroOver.getPosY() >= (300 - (cuadroOver.getHeight() / 2))) {
+                casita.setPosY(casita.getPosY() - velTransicionY);
+                restart.setPosY(restart.getPosY() - velTransicionY);
+                cuadroOver.setPosY(cuadroOver.getPosY() - velTransicionY);
             }
         }
-        
-        
 
         //MANEJO DEL MENU
         if (menu) {
@@ -680,7 +678,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < enemigos.size(); i++) {
             Enemigo actual = enemigos.get(i);
             if (actual.intersecta(carro)) {
-               vidas = 0;
+                vidas = 0;
             }
         }
         for (int i = 0; i < podrida.size(); i++) {
@@ -824,11 +822,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             g.setColor(Color.BLACK);
             g.drawString("" + score, 25 + carrito.getWidth(this), 87);
 
-
             //vidas
-            g.drawImage(corazon, this.getWidth() - 106, 40 , this);
+            g.drawImage(corazon, this.getWidth() - 106, 40, this);
             g.drawString("" + vidas, this.getWidth() - 80, 87);
-            if (gameover){
+            if (gameover) {
                 g.drawImage(cuadroOver.getImagen(), cuadroOver.getPosX(), cuadroOver.getPosY(), this);
                 g.drawImage(casita.getImagen(), casita.getPosX(), casita.getPosY(), this);
                 g.drawImage(restart.getImagen(), restart.getPosX(), restart.getPosY(), this);
@@ -863,8 +860,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (!transicion && !regreso) {
                     for (int i = 0; i < 10; i++) {
                         g.drawString(arrNombres[i], 200, 180 + (i * 35));
-                        for (int j = 20+(arrNombres[i].length()*20); j<760;j+=20){
-                            g.drawString(".", 200+j, 180 + (i * 35));
+                        for (int j = 20 + (arrNombres[i].length() * 20); j < 760; j += 20) {
+                            g.drawString(".", 200 + j, 180 + (i * 35));
                         }
                         g.drawString("" + arrScores[i], 960, 180 + (i * 35));
                     }
@@ -932,7 +929,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
             }
         }
-        if (gameover){
+        if (gameover) {
             if (casita.dentro(e.getX(), e.getY())) {
                 menu = true;
                 principal = true;
@@ -943,7 +940,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 cuadroOver.setPosY(660);
                 gameover = false;
             }
-            
+
             if (restart.dentro(e.getX(), e.getY())) {
                 inicio = true;
                 jugar = true;
@@ -1129,30 +1126,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         String[] auxNombres = new String[10];
         int[] auxScores = new int[10];
         boolean acabo = false;
-        for (int i = 0, a=0; i < 10; i++){
-            if(!acabo){
-                if(score >= arrScores[i]){
-                   auxScores[i] = score;
-                   auxNombres[i] = nombre; 
-                   acabo=true;
-                }
-                else{
+        for (int i = 0, a = 0; i < 10; i++) {
+            if (!acabo) {
+                if (score >= arrScores[i]) {
+                    auxScores[i] = score;
+                    auxNombres[i] = nombre;
+                    acabo = true;
+                } else {
                     auxScores[i] = arrScores[a];
                     auxNombres[i] = arrNombres[a];
                     a++;
                 }
-            }
-            else{
+            } else {
                 auxScores[i] = arrScores[a];
                 auxNombres[i] = arrNombres[a];
                 a++;
             }
         }
-        for(int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             arrScores[i] = auxScores[i];
             arrNombres[i] = auxNombres[i];
         }
-        fileOut.println(arrNombres[0] + "," + arrScores[0]+ "," + arrNombres[1] + "," + arrScores[1] +"," + arrNombres[2] + "," + arrScores[2] +"," + arrNombres[3] + "," + arrScores[3] +"," + arrNombres[4] + "," + arrScores[4] +"," + arrNombres[5] + "," + arrScores[5] +"," + arrNombres[6] + "," + arrScores[6] +"," + arrNombres[7] + "," + arrScores[7] +"," + arrNombres[8] + "," + arrScores[8] +"," + arrNombres[9] + "," + arrScores[9]);
+        fileOut.println(arrNombres[0] + "," + arrScores[0] + "," + arrNombres[1] + "," + arrScores[1] + "," + arrNombres[2] + "," + arrScores[2] + "," + arrNombres[3] + "," + arrScores[3] + "," + arrNombres[4] + "," + arrScores[4] + "," + arrNombres[5] + "," + arrScores[5] + "," + arrNombres[6] + "," + arrScores[6] + "," + arrNombres[7] + "," + arrScores[7] + "," + arrNombres[8] + "," + arrScores[8] + "," + arrNombres[9] + "," + arrScores[9]);
         fileOut.close();
     }
 

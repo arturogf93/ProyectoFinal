@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 public class ProyectoFinal {
 
     /**
-     * hola
+     * 
      *
      * @param args the command line arguments
      * @throws java.io.IOException

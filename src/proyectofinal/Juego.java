@@ -357,9 +357,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         animLamp = new Animacion();                //crea animacion del carro
         animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
+        
         musicaMenu = new SoundClip("Sounds/Menu.wav");
         musicaJuego = new SoundClip("Sounds/Juego.wav");
-        musicaGameover = new SoundClip("Sounds/Gameover.wav");
+        musicaGameover = new SoundClip("Sounds/GameOver.wav");
         food1 = new SoundClip("Sounds/coin1.wav");
         food2 = new SoundClip("Sounds/coin2.wav");
         badFood = new SoundClip("Sounds/mala.wav");

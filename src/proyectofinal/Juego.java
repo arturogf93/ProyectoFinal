@@ -488,7 +488,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //Actualiza Carro
             (carro.getImagenes()).actualiza(tiempoActual);
-            carro.setPosX(carro.getPosX() + mov);
+            if (carro.getSuelo()){
+                carro.setPosX(carro.getPosX() + mov);
+            }
+            else{
+                carro.setPosX(carro.getPosX() + ((int)(mov/1.5)));
+            }
             if (carro.getPosX() < 0) {
                 carro.setPosX(0);
             }
@@ -791,14 +796,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (sound){
                     brinco.play();
                 }
-                carro.setVelY(-33);
+                carro.setVelY(-30);
                 jump = true;
                 carro.setSuelo(false);
             } else if (jump && !carro.getSuelo() && !doublejump) {
                 if (sound){
                     brinco2.play();
                 }
-                carro.setVelY(-24);
+                carro.setVelY(-28);
                 jump = false;
                 doublejump = true;
             }
@@ -1454,13 +1459,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     public void CrearEnemigos() {
         if (!crearenemigo && enemigos.size() < 2) {
-            aleatorioEnemigo = (int) (Math.random() * 80);
+            aleatorioEnemigo = (int) (Math.random() * 60);
             if (aleatorioEnemigo == 0) {
                 crearenemigo = true;
             }
         }
         if (crearenemigo) {
-            aleatorioEnemigo = (int) (Math.random() * ((int) (3 + (4 - velocidad / 4))));
+            aleatorioEnemigo = (int) (Math.random() * ((int) (3 + (2 - velocidad / 9))));
             if (aleatorioEnemigo == 0 && score > 25) {
                 enemigos.add(new Enemigo(1200, 460, animV, velocidad + 1));
             } else if (aleatorioEnemigo == 1 && score > 25) {

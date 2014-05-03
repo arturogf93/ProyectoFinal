@@ -66,6 +66,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int velTransicionX;
     private int velTransicionY;
     private int auxfood;
+    private int x;
+    private int y;
 
     private Carro carro;
 
@@ -75,6 +77,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private LinkedList<Enemigo> enemigos;
 
+    private LinkedList<Base> burbuja;
+
     private Image carrito;
     private Image fondo01;
     private Image fondo02;
@@ -82,6 +86,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image fondo00;
     private Image menuPrincipal;
 
+    private Image letreroBurbuja;
+
+    private Image lock;
+    private Image bubbleN;
     private Image creditosN;
     private Image creditosS;
     private Image instN;
@@ -104,6 +112,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image home;
     private Image flecha;
     private Image cuadrillo;
+    private Image imagenpausa;
 
     private Boton bCreditos;
     private Boton bInst;
@@ -117,6 +126,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Boton casita;
     private Boton restart;
     private Boton cuadroOver;
+    private Boton bubbleComprar;
 
     private boolean pausa;              //Booleando para pausa
     private boolean jump;
@@ -136,6 +146,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean jugar;
     private boolean transicion;
     private boolean regreso;
+    private boolean crearBurbuja;
+    private boolean burbujaActiva;
+
+    private boolean burbujaComprada;
+    private boolean bubbleSeleccionada;
 
     private Animacion animC1;
     private Animacion animC2;
@@ -153,15 +168,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Animacion eleccion;
     private Animacion enem;
     private Animacion animLamp;
+    private Animacion escudo;
 
     private String archivoSave;
     private String archivoHighscores;
     private String nombre;
 
     private String[] arr;
+    private String[] arrsave;
     private String[] arrNombres;
     private int[] arrScores;
-    
+
     private SoundClip musicaMenu;
     private SoundClip musicaJuego;
     private SoundClip musicaGameover;
@@ -172,6 +189,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip vuelta;
     private SoundClip brinco;
     private SoundClip brinco2;
+    private SoundClip comprar;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -188,6 +206,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         archivoSave = "Save.txt";
         archivoHighscores = "Highscores.txt";
         total = 0;
+        burbuja = new LinkedList();
         podrida = new LinkedList();
         comida = new LinkedList();
         enemigos = new LinkedList();
@@ -201,7 +220,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo03 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo03.png"));
         fondo00 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo00.png"));
         menuPrincipal = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/MenuPrincipal.png"));
+        lock = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lock.png"));
+        imagenpausa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreropausa.png"));
 
+        letreroBurbuja = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroburbuja.png"));
         creditosN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditos.png"));
         creditosS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditosSel.png"));
         tiendaN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/tienda.png"));
@@ -222,6 +244,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         izqN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/menuizq1.png"));
         izqS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Menuizq2.png"));
         corazon = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Corazon.png"));
+        bubbleN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bubblebuton1.png"));
 
         home = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/casita.png"));
         flecha = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/restart.png"));
@@ -236,11 +259,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         bArriba = new Boton(1100, 635, arribaN);
         bDer = new Boton(-120, 500, derN);
         bIzq = new Boton(1220, 500, izqN);
+        bubbleComprar = new Boton(1460, 160, bubbleN);
 
         casita = new Boton(600 - 160, 760, home);
         restart = new Boton(630, 760, flecha);
         cuadroOver = new Boton(600 - 300, 660, cuadrillo);
 
+        crearBurbuja = false;
+        burbujaActiva = false;
         regreso = false;
         transicion = false;
         pausa = false;
@@ -258,6 +284,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         highscores = false;
         instrucciones = false;
         tienda = false;
+        bubbleSeleccionada = false;
+
+        burbujaComprada = false;
 
         aleatorioEnemigo = 0;
         vidas = 3;
@@ -278,10 +307,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         eleccion = new Animacion();
         enem = new Animacion();
 
+        escudo = new Animacion();
+        escudo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bubble.png")), 100);
+
         animC1 = new Animacion();                //crea animacion del carro
         animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_1.png")), 100);
         animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
-        carro = new Carro(50, 490, animC1, 0);
+        carro = new Carro(50, 480, animC1, 0);
 
         animC2 = new Animacion();                //crea animacion del carro
         animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_1.png")), 100);
@@ -357,7 +389,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         animLamp = new Animacion();                //crea animacion del carro
         animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
-        
+
         musicaMenu = new SoundClip("Sounds/Menu.wav");
         musicaJuego = new SoundClip("Sounds/Juego.wav");
         musicaGameover = new SoundClip("Sounds/GameOver.wav");
@@ -368,6 +400,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         vuelta = new SoundClip("Sounds/vuelta.wav");
         brinco = new SoundClip("Sounds/brinco.wav");
         brinco2 = new SoundClip("Sounds/brinco.wav");
+        comprar = new SoundClip("Sounds/Comprar.wav");
     }
 
     /**
@@ -437,11 +470,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         tiempoActual += tiempoTranscurrido;
 
         if (!pausa && inicio) {
-            if (sound){
+            if (sound) {
                 musicaMenu.stop();
                 musicaMenu.restart();
                 musicaJuego.play2();
-            }else{
+            } else {
                 musicaJuego.stop();
                 musicaMenu.stop();
                 musicaMenu.restart();
@@ -488,11 +521,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //Actualiza Carro
             (carro.getImagenes()).actualiza(tiempoActual);
-            if (carro.getSuelo()){
+            if (carro.getSuelo()) {
                 carro.setPosX(carro.getPosX() + mov);
-            }
-            else{
-                carro.setPosX(carro.getPosX() + ((int)(mov/1.5)));
+            } else if (jump) {
+                carro.setPosX(carro.getPosX() + ((int) (mov / 1.5)));
+            } else if (doublejump) {
+                carro.setPosX(carro.getPosX() + ((int) (mov / 2)));
             }
             if (carro.getPosX() < 0) {
                 carro.setPosX(0);
@@ -534,9 +568,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     jump = false;
                     doublejump = false;
                 }
-                if (carro.getPosY() + carro.getVelY() >= 490) {
+                if (carro.getPosY() + carro.getVelY() >= 481) {
                     carro.setSuelo(true);
-                    carro.setPosY(489);
+                    carro.setPosY(480);
                     carro.setVelY(0);
                 } else if (carro.getPosY() + carro.getVelY() <= 20) {
                     carro.setPosY(20);
@@ -549,11 +583,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
             //Se acaban las vidas
             if (vidas == 0) {
-                if (sound){
+                if (sound) {
                     musicaJuego.stop();
                     musicaJuego.restart();
                     musicaGameover.play2();
-                }else{
+                } else {
                     musicaJuego.stop();
                     musicaJuego.restart();
                     musicaGameover.stop();
@@ -563,7 +597,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 pausa = false;
                 vidas = 3;
                 carro.setPosX(50);
-                carro.setPosY(490);
+                carro.setPosY(480);
                 comida.clear();
                 podrida.clear();
                 enemigos.clear();
@@ -590,6 +624,20 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             } else if (score >= 150) {
                 carro.setImagenes(animC3);
             }
+
+            crearBurbuja = burbujaComprada;
+            if (crearBurbuja) {
+                burbuja.add(new Base(carro.getPosX() - 6, carro.getPosY() - 10, escudo));
+                crearBurbuja = false;
+                burbujaActiva = true;
+            }
+
+            if (burbujaActiva) {
+                Base bubble = burbuja.get(0);
+                bubble.setPosX(carro.getPosX() - 6);
+                bubble.setPosY(carro.getPosY() - 10);
+            }
+
         }
 
         if (gameover) {
@@ -602,9 +650,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         //MANEJO DEL MENU
         if (menu) {
-            if (sound){
+            if (sound) {
                 musicaMenu.play2();
-            }else{
+            } else {
                 musicaMenu.stop();
             }
             if (principal && transicion) {
@@ -629,6 +677,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bTienda.setPosX(bTienda.getPosX() - velTransicionX);
                     bScore.setPosX(bScore.getPosX() - velTransicionX);
                     bIzq.setPosX(bIzq.getPosX() - velTransicionX);
+                    bubbleComprar.setPosX(bubbleComprar.getPosX() - velTransicionX);
                     if (menuX <= -2400) {
                         transicion = false;
                         principal = false;
@@ -683,6 +732,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bTienda.setPosX(bTienda.getPosX() + velTransicionX);
                     bScore.setPosX(bScore.getPosX() + velTransicionX);
                     bIzq.setPosX(bIzq.getPosX() + velTransicionX);
+                    bubbleComprar.setPosX(bubbleComprar.getPosX() + velTransicionX);
                     if (menuX >= -1200) {
                         regreso = false;
                         tienda = false;
@@ -726,11 +776,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         for (int i = 0; i < comida.size(); i++) {
             Comida actual = comida.get(i);
             if (actual.intersecta(carro)) {
-                if (auxfood==0&&sound){
+                if (auxfood == 0 && sound) {
                     food1.play();
                     auxfood++;
-                }
-                else if (sound){
+                } else if (sound) {
                     food2.play();
                     auxfood = 0;
                 }
@@ -743,11 +792,21 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (actual.intersecta(carro)) {
                 vidas = 0;
             }
+            if (burbujaActiva) {
+                Base bubble = burbuja.get(0);
+                if (actual.intersecta(bubble)) {
+                    burbuja.remove(0);
+                    enemigos.remove(i);
+                    burbujaActiva = false;
+                    burbujaComprada = false;
+                }
+            }
+
         }
         for (int i = 0; i < podrida.size(); i++) {
             Podrida actual = podrida.get(i);
             if (actual.intersecta(carro)) {
-                if (sound){
+                if (sound) {
                     badFood.play();
                 }
                 vidas--;
@@ -793,14 +852,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (!jump && !doublejump && carro.getSuelo()) {
-                if (sound){
+                if (sound) {
                     brinco.play();
                 }
                 carro.setVelY(-30);
                 jump = true;
                 carro.setSuelo(false);
             } else if (jump && !carro.getSuelo() && !doublejump) {
-                if (sound){
+                if (sound) {
                     brinco2.play();
                 }
                 carro.setVelY(-28);
@@ -815,6 +874,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             mov = -(velocidad);
         }
+        /*if (e.getKeyCode() == KeyEvent.VK_B) {
+         if (!burbujaActiva){
+         crearBurbuja = true;
+         }
+         }*/
     }
 
     /**
@@ -905,6 +969,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(casita.getImagen(), casita.getPosX(), casita.getPosY(), this);
                 g.drawImage(restart.getImagen(), restart.getPosX(), restart.getPosY(), this);
             }
+            if (burbujaActiva) {
+                Base bubble = burbuja.get(0);
+                g.drawImage(bubble.getImagen(), bubble.getPosX(), bubble.getPosY(), this);
+            }
+            if(pausa){
+                g.drawImage(imagenpausa, this.getWidth()/2-imagenpausa.getWidth(this)/2, this.getHeight()/2-imagenpausa.getHeight(this)/2, this);
+            }
         } else if (menu) {
             g.drawImage(menuPrincipal, menuX, menuY, this);
             if (principal) {
@@ -918,7 +989,17 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(bDer.getImagen(), bDer.getPosX(), bDer.getPosY(), this);
             }
             if (tienda) {
+                g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+                g.setColor(Color.WHITE);
                 g.drawImage(bIzq.getImagen(), bIzq.getPosX(), bIzq.getPosY(), this);
+                g.drawImage(bubbleComprar.getImagen(), bubbleComprar.getPosX(), bubbleComprar.getPosY(), this);
+                g.drawString("$500", bubbleComprar.getPosX() + 35, bubbleComprar.getPosY() + 125 + 21);
+                if (!burbujaComprada) {
+                    g.drawImage(lock, bubbleComprar.getPosX() + 38, bubbleComprar.getPosY() + 30, this);
+                }
+                if (bubbleSeleccionada) {
+                    g.drawImage(letreroBurbuja, x, y, this);
+                }
                 if (!transicion && !regreso) {
                     g.setFont(new Font("TimesRoman", Font.BOLD, 30));
                     g.setColor(Color.WHITE);
@@ -963,28 +1044,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     menu = false;
                 }
                 if (bCreditos.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     creditos = true;
                 }
                 if (bTienda.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     tienda = true;
                 }
                 if (bInst.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     instrucciones = true;
                 }
                 if (bScore.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         ida.play();
                     }
                     transicion = true;
@@ -993,7 +1074,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             if (creditos) {
                 if (bDer.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         vuelta.play();
                     }
                     regreso = true;
@@ -1002,16 +1083,29 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             if (tienda) {
                 if (bIzq.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         vuelta.play();
                     }
                     regreso = true;
                     principal = true;
                 }
+                if (bubbleComprar.dentro(e.getX(), e.getY()) && bubbleSeleccionada && !burbujaComprada) {
+                    if (sound) {
+                        comprar.play();
+                    }
+                    burbujaComprada = true;
+                    total -= 500;
+                    bubbleSeleccionada = false;
+                    try {
+                        grabaSave();
+                    } catch (IOException ioe) {
+                        System.out.println("Error en " + ioe.toString());
+                    }
+                }
             }
             if (instrucciones) {
                 if (bAbajo.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         vuelta.play();
                     }
                     regreso = true;
@@ -1020,7 +1114,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             if (highscores) {
                 if (bArriba.dentro(e.getX(), e.getY())) {
-                    if (sound){
+                    if (sound) {
                         vuelta.play();
                     }
                     regreso = true;
@@ -1114,61 +1208,69 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * este metodo maneja el evento que se genera al mover el mouse
      */
     public void mouseMoved(MouseEvent e) {
+        x = e.getX();
+        y = e.getY();
         if (menu) {
             if (principal) {
-                if (bCreditos.dentro(e.getX(), e.getY())) {
+                if (bCreditos.dentro(x, y)) {
                     bCreditos.setImagen(creditosS);
                 } else {
                     bCreditos.setImagen(creditosN);
                 }
 
-                if (bTienda.dentro(e.getX(), e.getY())) {
+                if (bTienda.dentro(x, y)) {
                     bTienda.setImagen(tiendaS);
                 } else {
                     bTienda.setImagen(tiendaN);
                 }
 
-                if (bInst.dentro(e.getX(), e.getY())) {
+                if (bInst.dentro(x, y)) {
                     bInst.setImagen(instS);
                 } else {
                     bInst.setImagen(instN);
                 }
 
-                if (bPlay.dentro(e.getX(), e.getY())) {
+                if (bPlay.dentro(x, y)) {
                     bPlay.setImagen(playS);
                 } else {
                     bPlay.setImagen(playN);
                 }
 
-                if (bScore.dentro(e.getX(), e.getY())) {
+                if (bScore.dentro(x, y)) {
                     bScore.setImagen(scoreS);
                 } else {
                     bScore.setImagen(scoreN);
                 }
             }
             if (creditos) {
-                if (bDer.dentro(e.getX(), e.getY())) {
+                if (bDer.dentro(x, y)) {
                     bDer.setImagen(derS);
                 } else {
                     bDer.setImagen(derN);
                 }
             }
             if (tienda) {
-                if (bIzq.dentro(e.getX(), e.getY())) {
+                if (bIzq.dentro(x, y)) {
                     bIzq.setImagen(izqS);
                 } else {
                     bIzq.setImagen(izqN);
                 }
+                if (bubbleComprar.dentro(e.getX(), e.getY())) {
+                    bubbleSeleccionada = true;
+                } else {
+                    bubbleSeleccionada = false;
+                }
+
             }
             if (instrucciones) {
-                if (bAbajo.dentro(e.getX(), e.getY())) {
+                if (bAbajo.dentro(x, y)) {
                     bAbajo.setImagen(abajoS);
                 } else {
                     bAbajo.setImagen(abajoN);
                 }
             }
             if (highscores) {
-                if (bArriba.dentro(e.getX(), e.getY())) {
+                if (bArriba.dentro(x, y)) {
                     bArriba.setImagen(arribaS);
                 } else {
                     bArriba.setImagen(arribaN);
@@ -1185,15 +1287,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } catch (FileNotFoundException e) {
             File save = new File(archivoSave);
             PrintWriter fileOut = new PrintWriter(save);
-            fileOut.println("0");
+            fileOut.println("0,false");
             fileOut.close();
             fileIn = new BufferedReader(new FileReader(archivoSave));
         }
         String dato = fileIn.readLine();
         while (dato != null) {
 
-            //arr = dato.split(",");
-            total = (Integer.parseInt(dato));
+            arrsave = dato.split(",");
+            total = (Integer.parseInt(arrsave[0]));
+            burbujaComprada = (Boolean.parseBoolean(arrsave[1]));
             dato = fileIn.readLine();
         }
         fileIn.close();
@@ -1202,7 +1305,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void grabaSave() throws IOException {
 
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
-        fileOut.println(total);
+
+        fileOut.print(total + ",");
+        fileOut.print(burbujaComprada);
         fileOut.close();
     }
 

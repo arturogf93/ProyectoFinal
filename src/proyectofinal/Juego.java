@@ -89,6 +89,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private Image letreroBurbuja;
     private Image letreroCohete;
+    private Image letreroVestuario;
 
     private Image lock;
     private Image bubbleN;
@@ -169,7 +170,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean comprado;
 
     private boolean coheteSeleccionado;
-
+    private boolean vestuarioSeleccionado;
     private boolean bubbleSeleccionada;
 
     private boolean azul;
@@ -289,6 +290,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         coheteTienda = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cohete.png"));
         letreroBurbuja = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroburbuja.png"));
         letreroCohete = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroCohete.png"));
+        letreroVestuario = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroVestuario.png"));
         creditosN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditos.png"));
         creditosS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditosSel.png"));
         tiendaN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/tienda.png"));
@@ -1120,6 +1122,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (coheteSeleccionado) {
                     g.drawImage(letreroCohete, x, y, this);
                 }
+                if (vestuarioSeleccionado) {
+                    g.drawImage(letreroVestuario, 430, 110, this);
+                }
+                
                 if (!transicion && !regreso) {
                     g.setFont(new Font("TimesRoman", Font.BOLD, 30));
                     g.setColor(Color.WHITE);
@@ -1483,7 +1489,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         rosa = false;
                         cafe = false;
                         negro = false;
-                        azul = true;
+                        azul = false;
                         total -= 10000;
                         coheteSeleccionado = false;
                         try {
@@ -1644,22 +1650,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bDer.setImagen(derN);
                 }
             }
-            if (tienda) {
+            if (tienda) {                
                 if (bIzq.dentro(x, y)) {
                     bIzq.setImagen(izqS);
                 } else {
                     bIzq.setImagen(izqN);
                 }
-                if (bubbleComprar.dentro(x, y)) {
-                    bubbleSeleccionada = true;
-                } else {
-                    bubbleSeleccionada = false;
-                }
-                if (bCohete.dentro(x, y)) {
-                    coheteSeleccionado = true;
-                } else {
-                    coheteSeleccionado = false;
-                }
+                bubbleSeleccionada = bubbleComprar.dentro(x, y);
+                coheteSeleccionado = bCohete.dentro(x, y);
+                vestuarioSeleccionado = vestuario.dentro(x, y);
 
             }
             if (instrucciones) {

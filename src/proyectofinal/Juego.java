@@ -48,6 +48,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private final int[][] patron6 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70}};
     private final int[][] patron7 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520}};
 
+    private int indicadorVestuario;
     private int fondo1;
     private int fondo2;
     private int fondo3;
@@ -87,9 +88,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image menuPrincipal;
 
     private Image letreroBurbuja;
+    private Image letreroCohete;
 
     private Image lock;
     private Image bubbleN;
+    private Image coheteTienda;
+    private Image check;
+
     private Image creditosN;
     private Image creditosS;
     private Image instN;
@@ -113,6 +118,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Image flecha;
     private Image cuadrillo;
     private Image imagenpausa;
+    private Image der;
+    private Image izq;
+    private Image huskyazul;
+    private Image huskyrosa;
+    private Image huskynegro;
+    private Image huskycohete;
+    private Image huskycafe;
 
     private Boton bCreditos;
     private Boton bInst;
@@ -127,6 +139,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Boton restart;
     private Boton cuadroOver;
     private Boton bubbleComprar;
+    private Boton bCohete;
+    private Boton vestuario;
+    private Boton derecha;
+    private Boton izquierda;
 
     private boolean pausa;              //Booleando para pausa
     private boolean jump;
@@ -148,13 +164,42 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean regreso;
     private boolean crearBurbuja;
     private boolean burbujaActiva;
+    
+    private boolean seleccionado;
+    private boolean comprado;
 
-    private boolean burbujaComprada;
+    private boolean coheteSeleccionado;
+
     private boolean bubbleSeleccionada;
+
+    private boolean azul;
+    private boolean rosa;
+    private boolean cafe;
+    private boolean negro;
+    private boolean azulComprado;
+    private boolean rosaComprado;
+    private boolean cafeComprado;
+    private boolean negroComprado;
+    private boolean coheteComprado;
+    private boolean coheteActivo;
+    private boolean burbujaComprada;
 
     private Animacion animC1;
     private Animacion animC2;
     private Animacion animC3;
+    private Animacion animA1;
+    private Animacion animA2;
+    private Animacion animA3;
+    private Animacion animN1;
+    private Animacion animN2;
+    private Animacion animN3;
+    private Animacion animR1;
+    private Animacion animR2;
+    private Animacion animR3;
+    private Animacion animCa1;
+    private Animacion animCa2;
+    private Animacion animCa3;
+
     private Animacion animH;
     private Animacion animCan;
     private Animacion animZ;
@@ -169,6 +214,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private Animacion enem;
     private Animacion animLamp;
     private Animacion escudo;
+
+    private Animacion azulCoheteActual;
+    private Animacion azulCoheteAireActual;
+    private Animacion azulCoheteOnActual;
+    private Animacion azulCohete;
+    private Animacion azulCoheteAire;
+    private Animacion azulCoheteOn;
+    private Animacion azulCohetemedio;
+    private Animacion azulCoheteAiremedio;
+    private Animacion azulCoheteOnmedio;
+    private Animacion azulCohetelleno;
+    private Animacion azulCoheteAirelleno;
+    private Animacion azulCoheteOnlleno;
 
     private String archivoSave;
     private String archivoHighscores;
@@ -190,6 +248,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip brinco;
     private SoundClip brinco2;
     private SoundClip comprar;
+    private SoundClip error;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -214,6 +273,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
+
+        der = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/derecha.png"));
+        izq = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/izquierda.png"));
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Cart.png"));
         fondo01 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo01.jpg"));
         fondo02 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo02.png"));
@@ -221,9 +283,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fondo00 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fondo00.png"));
         menuPrincipal = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/MenuPrincipal.png"));
         lock = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lock.png"));
+        check = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/check.png"));
         imagenpausa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreropausa.png"));
 
+        coheteTienda = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cohete.png"));
         letreroBurbuja = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroburbuja.png"));
+        letreroCohete = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/letreroCohete.png"));
         creditosN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditos.png"));
         creditosS = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/creditosSel.png"));
         tiendaN = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/tienda.png"));
@@ -250,6 +315,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         flecha = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/restart.png"));
         cuadrillo = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/gameover.png"));
 
+        huskyazul = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png"));
+        huskynegro = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro3_1.png"));
+        huskyrosa = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa3_1.png"));
+        huskycohete = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetlleno.png"));
+        huskycafe = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_1.png"));
+
         bCreditos = new Boton(25, 250, creditosN);
         bTienda = new Boton(1000, 250, tiendaN);
         bPlay = new Boton(515, 350, playN);
@@ -260,11 +331,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         bDer = new Boton(-120, 500, derN);
         bIzq = new Boton(1220, 500, izqN);
         bubbleComprar = new Boton(1460, 160, bubbleN);
+        bCohete = new Boton(1495, 350, coheteTienda);
+        derecha = new Boton(2095, 300, der);
+        izquierda = new Boton(1795, 300, izq);
+        vestuario = new Boton(1910, 280, huskyazul);
 
         casita = new Boton(600 - 160, 760, home);
         restart = new Boton(630, 760, flecha);
         cuadroOver = new Boton(600 - 300, 660, cuadrillo);
 
+        azul = false;
+        rosa = false;
+        negro = false;
+        cafe = false;
         crearBurbuja = false;
         burbujaActiva = false;
         regreso = false;
@@ -285,6 +364,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         instrucciones = false;
         tienda = false;
         bubbleSeleccionada = false;
+        seleccionado = false;
+        comprado = false;
+
+        coheteSeleccionado = false;
 
         burbujaComprada = false;
 
@@ -304,91 +387,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         velTransicionY = 20;
         velTransicionX = 40;
 
-        eleccion = new Animacion();
-        enem = new Animacion();
+        crearAnimaciones();
 
-        escudo = new Animacion();
-        escudo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bubble.png")), 100);
-
-        animC1 = new Animacion();                //crea animacion del carro
-        animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_1.png")), 100);
-        animC1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
-        carro = new Carro(50, 480, animC1, 0);
-
-        animC2 = new Animacion();                //crea animacion del carro
-        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_1.png")), 100);
-        animC2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_2.png")), 100);
-
-        animC3 = new Animacion();                //crea animacion del carro
-        animC3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_1.png")), 100);
-        animC3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png")), 100);
-
-        animH = new Animacion();
-        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer1.png")), 50);
-        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
-        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer3.png")), 50);
-        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
-
-        animCan = new Animacion();
-        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can1.png")), 50);
-        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
-        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can3.png")), 50);
-        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
-
-        animZ = new Animacion();
-        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot1.png")), 50);
-        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
-        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot3.png")), 50);
-        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
-
-        animIce = new Animacion();
-        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice1.png")), 50);
-        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
-        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice3.png")), 50);
-        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
-
-        animCoo = new Animacion();
-        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie1.png")), 50);
-        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
-        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie3.png")), 50);
-        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
-
-        animQ = new Animacion();
-        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese1.png")), 50);
-        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
-        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese3.png")), 50);
-        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
-
-        animF = new Animacion();
-        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish1.png")), 50);
-        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
-        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish3.png")), 50);
-        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
-
-        animP = new Animacion();
-        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza1.png")), 50);
-        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
-        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza3.png")), 50);
-        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
-
-        animV = new Animacion();
-        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita1.png")), 80);
-        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
-        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita3.png")), 80);
-        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
-
-        animN = new Animacion();
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño0.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño1.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño2.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño3.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño4.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño5.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño6.png")), 80);
-        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño7.png")), 80);
-
-        animLamp = new Animacion();                //crea animacion del carro
-        animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
+        carro = new Carro(50, 480, animA1, 0);
 
         musicaMenu = new SoundClip("Sounds/Menu.wav");
         musicaJuego = new SoundClip("Sounds/Juego.wav");
@@ -401,6 +402,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         brinco = new SoundClip("Sounds/brinco.wav");
         brinco2 = new SoundClip("Sounds/brinco.wav");
         comprar = new SoundClip("Sounds/Comprar.wav");
+        error = new SoundClip("Sounds/error.wav");
     }
 
     /**
@@ -562,8 +564,70 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 fondo3 = 1200 - velocidad;
             }
 
+            if (score < 75) {
+                if (coheteActivo) {
+                    azulCoheteActual = azulCohete;
+                    azulCoheteAireActual = azulCoheteAire;
+                    azulCoheteOnActual = azulCoheteOn;
+                    carro.setImagenes(azulCoheteActual);
+                } else {
+                    carro.setImagenes(animC1);
+                }
+            } else if (score >= 75 && score < 150) {
+                if (coheteActivo) {
+                    azulCoheteActual = azulCohetemedio;
+                    azulCoheteAireActual = azulCoheteAiremedio;
+                    azulCoheteOnActual = azulCoheteOnmedio;
+                    carro.setImagenes(azulCoheteActual);
+                } else {
+                    carro.setImagenes(animC2);
+                }
+            } else if (score >= 150) {
+                if (coheteActivo) {
+                    azulCoheteActual = azulCohetelleno;
+                    azulCoheteAireActual = azulCoheteAirelleno;
+                    azulCoheteOnActual = azulCoheteOnlleno;
+                    carro.setImagenes(azulCoheteActual);
+
+                } else {
+                    carro.setImagenes(animC3);
+                }
+            }
+
             //Saltos
-            if (jump || doublejump) {
+            if ((jump || doublejump) && coheteActivo) {
+                carro.setImagenes(azulCoheteAireActual);
+                if (carro.getSuelo()) {
+                    jump = false;
+                    doublejump = false;
+                }
+                if (carro.getPosY() + carro.getVelY() >= 481) {
+
+                    carro.setSuelo(true);
+                    carro.setPosY(480);
+                    carro.setVelY(0);
+                } else if (carro.getPosY() + carro.getVelY() <= 20) {
+                    carro.setPosY(20);
+                    carro.setVelY(carro.getVelY() + gravedad);
+                } else {
+                    if (!suelta) {
+                        if (carro.getVelY() < 0) {
+                            carro.setPosY(carro.getPosY() + carro.getVelY());
+                            carro.setVelY(carro.getVelY() + gravedad);
+                            carro.setImagenes(azulCoheteAireActual);
+                        } else {
+                            carro.setPosY(carro.getPosY() + carro.getVelY());
+                            carro.setVelY(3);
+                            carro.setImagenes(azulCoheteOnActual);
+                        }
+                    } else {
+                        carro.setPosY(carro.getPosY() + carro.getVelY());
+                        carro.setVelY(carro.getVelY() + gravedad);
+                    }
+                }
+            }
+
+            if ((jump || doublejump) && !coheteActivo) {
                 if (carro.getSuelo()) {
                     jump = false;
                     doublejump = false;
@@ -616,13 +680,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 grabaSave();
                 gameover = true;
                 inicio = false;
-            }
-            if (score < 75) {
-                carro.setImagenes(animC1);
-            } else if (score >= 75 && score < 150) {
-                carro.setImagenes(animC2);
-            } else if (score >= 150) {
-                carro.setImagenes(animC3);
             }
 
             crearBurbuja = burbujaComprada;
@@ -678,6 +735,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bScore.setPosX(bScore.getPosX() - velTransicionX);
                     bIzq.setPosX(bIzq.getPosX() - velTransicionX);
                     bubbleComprar.setPosX(bubbleComprar.getPosX() - velTransicionX);
+                    bCohete.setPosX(bCohete.getPosX() - velTransicionX);
+                    derecha.setPosX(derecha.getPosX() - velTransicionX);
+                    izquierda.setPosX(izquierda.getPosX() - velTransicionX);
+                    vestuario.setPosX(vestuario.getPosX() - velTransicionX);
                     if (menuX <= -2400) {
                         transicion = false;
                         principal = false;
@@ -733,6 +794,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bScore.setPosX(bScore.getPosX() + velTransicionX);
                     bIzq.setPosX(bIzq.getPosX() + velTransicionX);
                     bubbleComprar.setPosX(bubbleComprar.getPosX() + velTransicionX);
+                    bCohete.setPosX(bCohete.getPosX() + velTransicionX);
+                    derecha.setPosX(derecha.getPosX() + velTransicionX);
+                    izquierda.setPosX(izquierda.getPosX() + velTransicionX);
+                    vestuario.setPosX(vestuario.getPosX() + velTransicionX);
                     if (menuX >= -1200) {
                         regreso = false;
                         tienda = false;
@@ -764,6 +829,29 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         highscores = false;
                     }
                 }
+            }
+        }
+        if (tienda) {
+            if (indicadorVestuario == 1) {
+                seleccionado = azul;
+                comprado = azulComprado;
+                vestuario.setImagen(huskyazul);
+            } else if (indicadorVestuario == 2) {
+                seleccionado = rosa;
+                comprado = rosaComprado;
+                vestuario.setImagen(huskyrosa);
+            } else if (indicadorVestuario == 3) {
+                seleccionado = cafe;
+                comprado = cafeComprado;
+                vestuario.setImagen(huskycafe);
+            } else if (indicadorVestuario == 4) {
+                seleccionado = negro;
+                comprado = negroComprado;
+                vestuario.setImagen(huskynegro);
+            } else if (indicadorVestuario == 5) {
+                seleccionado = coheteActivo;
+                comprado = coheteComprado;
+                vestuario.setImagen(huskycohete);
             }
         }
     }
@@ -858,7 +946,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 carro.setVelY(-30);
                 jump = true;
                 carro.setSuelo(false);
-            } else if (jump && !carro.getSuelo() && !doublejump) {
+            } else if (jump && !carro.getSuelo() && !doublejump && suelta) {
                 if (sound) {
                     brinco2.play();
                 }
@@ -866,6 +954,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 jump = false;
                 doublejump = true;
             }
+            suelta = false;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             mov = velocidad;
@@ -973,8 +1062,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 Base bubble = burbuja.get(0);
                 g.drawImage(bubble.getImagen(), bubble.getPosX(), bubble.getPosY(), this);
             }
-            if(pausa){
-                g.drawImage(imagenpausa, this.getWidth()/2-imagenpausa.getWidth(this)/2, this.getHeight()/2-imagenpausa.getHeight(this)/2, this);
+            if (pausa) {
+                g.drawImage(imagenpausa, this.getWidth() / 2 - imagenpausa.getWidth(this) / 2, this.getHeight() / 2 - imagenpausa.getHeight(this) / 2, this);
             }
         } else if (menu) {
             g.drawImage(menuPrincipal, menuX, menuY, this);
@@ -994,11 +1083,42 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(bIzq.getImagen(), bIzq.getPosX(), bIzq.getPosY(), this);
                 g.drawImage(bubbleComprar.getImagen(), bubbleComprar.getPosX(), bubbleComprar.getPosY(), this);
                 g.drawString("$500", bubbleComprar.getPosX() + 35, bubbleComprar.getPosY() + 125 + 21);
+                g.drawImage(bCohete.getImagen(), bCohete.getPosX(), bCohete.getPosY(), this);
+                g.drawImage(derecha.getImagen(), derecha.getPosX(), derecha.getPosY(), this);
+                g.drawImage(vestuario.getImagen(), vestuario.getPosX(), vestuario.getPosY(), this);
+                if (indicadorVestuario ==1){
+                    g.drawString("Gratis", vestuario.getPosX()+30, vestuario.getPosY()+150);
+                } else if (indicadorVestuario == 2){
+                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
+                } else if (indicadorVestuario == 3){
+                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
+                } else if (indicadorVestuario == 4){
+                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
+                } else if (indicadorVestuario == 5){
+                    g.drawString("$10000", vestuario.getPosX()+25, vestuario.getPosY()+150);
+                } 
+                if (seleccionado){
+                    g.drawImage(check, vestuario.getPosX()+vestuario.getWidth()-7, vestuario.getPosY()+vestuario.getHeight()-15, this);
+                }
+                if (!comprado){
+                    g.drawImage(lock, vestuario.getPosX()+vestuario.getWidth()/2-20, vestuario.getPosY()+vestuario.getHeight()/2-20, this);
+                }
+                g.drawImage(izquierda.getImagen(), izquierda.getPosX(), izquierda.getPosY(), this);
+                g.drawString("$10000", bCohete.getPosX() - 15, bCohete.getPosY() + bCohete.getHeight() + 21);
                 if (!burbujaComprada) {
                     g.drawImage(lock, bubbleComprar.getPosX() + 38, bubbleComprar.getPosY() + 30, this);
                 }
+                if (!coheteComprado) {
+                    g.drawImage(lock, bCohete.getPosX() + 1, bCohete.getPosY() + 50, this);
+                }
+                if (coheteComprado && coheteActivo) {
+                    g.drawImage(check, bCohete.getPosX() + bCohete.getWidth() - 7, bCohete.getPosY() + bCohete.getHeight() - 15, this);
+                }
                 if (bubbleSeleccionada) {
                     g.drawImage(letreroBurbuja, x, y, this);
+                }
+                if (coheteSeleccionado) {
+                    g.drawImage(letreroCohete, x, y, this);
                 }
                 if (!transicion && !regreso) {
                     g.setFont(new Font("TimesRoman", Font.BOLD, 30));
@@ -1037,34 +1157,62 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     public void mouseClicked(MouseEvent e) {
         if (menu) {
             if (principal) {
-                if (bPlay.dentro(e.getX(), e.getY())) {
+                if (bPlay.dentro(x, y)) {
                     inicio = true;
                     crearcomida = true;
                     jugar = true;
                     menu = false;
+                    if (azul) {
+                        animC1 = animA1;
+                        animC2 = animA2;
+                        animC3 = animA3;
+                    } else if (rosa) {
+                        animC1 = animR1;
+                        animC2 = animR2;
+                        animC3 = animR3;
+                    } else if (cafe) {
+                        animC1 = animCa1;
+                        animC2 = animCa2;
+                        animC3 = animCa3;
+                    } else if (negro) {
+                        animC1 = animN1;
+                        animC2 = animN2;
+                        animC3 = animN3;
+                    }
                 }
-                if (bCreditos.dentro(e.getX(), e.getY())) {
+                if (bCreditos.dentro(x, y)) {
                     if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     creditos = true;
                 }
-                if (bTienda.dentro(e.getX(), e.getY())) {
+                if (bTienda.dentro(x, y)) {
                     if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     tienda = true;
+                    if (coheteActivo) {
+                        indicadorVestuario = 5;
+                    } else if (azul) {
+                        indicadorVestuario = 1;
+                    } else if (rosa) {
+                        indicadorVestuario = 2;
+                    } else if (cafe) {
+                        indicadorVestuario = 3;
+                    } else if (negro) {
+                        indicadorVestuario = 4;
+                    }
                 }
-                if (bInst.dentro(e.getX(), e.getY())) {
+                if (bInst.dentro(x, y)) {
                     if (sound) {
                         ida.play();
                     }
                     transicion = true;
                     instrucciones = true;
                 }
-                if (bScore.dentro(e.getX(), e.getY())) {
+                if (bScore.dentro(x, y)) {
                     if (sound) {
                         ida.play();
                     }
@@ -1073,7 +1221,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
             }
             if (creditos) {
-                if (bDer.dentro(e.getX(), e.getY())) {
+                if (bDer.dentro(x, y)) {
                     if (sound) {
                         vuelta.play();
                     }
@@ -1082,29 +1230,276 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
             }
             if (tienda) {
-                if (bIzq.dentro(e.getX(), e.getY())) {
+                if (vestuario.dentro(x, y)){
+                    if (indicadorVestuario == 1) {
+                        if (!azul&&azulComprado){
+                            azul = true;
+                            cafe = false;
+                            rosa = false;
+                            negro = false;
+                            coheteActivo = false;
+                            try {
+                                grabaSave();
+                            } catch (IOException ioe) {
+                                System.out.println("Error en " + ioe.toString());
+                            }
+                        }
+                        if (!azulComprado){
+                            if (total >=0){
+                                if (sound){
+                                    comprar.play();
+                                }
+                                azulComprado = true;
+                                total -= 0;
+                                azul = true;
+                                cafe = false;
+                                rosa = false;
+                                negro = false;
+                                coheteActivo = false;
+                                try {
+                                    grabaSave();
+                                } catch (IOException ioe) {
+                                    System.out.println("Error en " + ioe.toString());
+                                }
+                            } else{
+                                if (sound){
+                                    error.play();
+                                }
+                            }
+                        }
+                    } else if (indicadorVestuario == 2) {
+                        if (!rosa&&rosaComprado){
+                            azul = false;
+                            cafe = false;
+                            rosa = true;
+                            negro = false;
+                            coheteActivo = false;
+                            try {
+                                grabaSave();
+                            } catch (IOException ioe) {
+                                System.out.println("Error en " + ioe.toString());
+                            }
+                        }
+                        if (!rosaComprado){
+                            if (total>=2000){
+                                if (sound){
+                                    comprar.play();
+                                }
+                                rosaComprado = true;
+                                total -= 2000;
+                                azul = false;
+                                cafe = false;
+                                rosa = true;
+                                negro = false;
+                                coheteActivo = false;
+                                try {
+                                    grabaSave();
+                                } catch (IOException ioe) {
+                                    System.out.println("Error en " + ioe.toString());
+                                }
+                            }else{
+                                if (sound){
+                                    error.play();
+                                }
+                            }
+                        }
+                    } else if (indicadorVestuario == 3) {
+                        if (!cafe&&cafeComprado){
+                            azul = false;
+                            cafe = true;
+                            rosa = false;
+                            negro = false;
+                            coheteActivo = false;
+                            try {
+                                grabaSave();
+                            } catch (IOException ioe) {
+                                System.out.println("Error en " + ioe.toString());
+                            }
+                        }
+                        if (!cafeComprado){
+                            if (total>=2000){
+                                if (sound){
+                                    comprar.play();
+                                }
+                                cafeComprado = true;
+                                total -= 2000;
+                                azul = false;
+                                cafe = true;
+                                rosa = false;
+                                negro = false;
+                                coheteActivo = false;
+                                try {
+                                    grabaSave();
+                                } catch (IOException ioe) {
+                                    System.out.println("Error en " + ioe.toString());
+                                }
+                            }else{
+                                if (sound){
+                                    error.play();
+                                }
+                            }
+                        }
+                    } else if (indicadorVestuario == 4) {
+                        if (!negro&&negroComprado){
+                            azul = false;
+                            cafe = false;
+                            rosa = false;
+                            negro = true;
+                            coheteActivo = false;
+                            try {
+                                grabaSave();
+                            } catch (IOException ioe) {
+                                System.out.println("Error en " + ioe.toString());
+                            }
+                        }
+                        if (!negroComprado){
+                            if (total>=2000){
+                                if (sound){
+                                    comprar.play();
+                                }
+                                negroComprado = true;
+                                total -= 2000;
+                                azul = false;
+                                cafe = false;
+                                rosa = false;
+                                negro = true;
+                                coheteActivo = false;
+                                try {
+                                    grabaSave();
+                                } catch (IOException ioe) {
+                                    System.out.println("Error en " + ioe.toString());
+                                }
+                            }else{
+                                if (sound){
+                                    error.play();
+                                }
+                            }
+                        }
+                    } else if (indicadorVestuario == 5) {
+                        if (!coheteActivo&&coheteComprado){
+                            azul = false;
+                            cafe = false;
+                            rosa = false;
+                            negro = false;
+                            coheteActivo = true;
+                            try {
+                                grabaSave();
+                            } catch (IOException ioe) {
+                                System.out.println("Error en " + ioe.toString());
+                            }
+                        }
+                        if (!coheteComprado){
+                            if (total>=10000){
+                                if (sound){
+                                    comprar.play();
+                                }
+                                coheteComprado = true;
+                                total -= 10000;
+                                azul = false;
+                                cafe = false;
+                                rosa = false;
+                                negro = false;
+                                coheteActivo = true;
+                                try {
+                                    grabaSave();
+                                } catch (IOException ioe) {
+                                    System.out.println("Error en " + ioe.toString());
+                                }
+                            }else{
+                                if (sound){
+                                    error.play();
+                                }
+                            }
+                        }
+                    }
+                }
+                if (bIzq.dentro(x, y)) {
                     if (sound) {
                         vuelta.play();
                     }
                     regreso = true;
                     principal = true;
                 }
-                if (bubbleComprar.dentro(e.getX(), e.getY()) && bubbleSeleccionada && !burbujaComprada) {
-                    if (sound) {
-                        comprar.play();
+                if (derecha.dentro(x, y)){
+                    indicadorVestuario++;
+                    if (indicadorVestuario>5){
+                        indicadorVestuario = 1;
                     }
-                    burbujaComprada = true;
-                    total -= 500;
-                    bubbleSeleccionada = false;
+                }
+                if (izquierda.dentro(x, y)){
+                    indicadorVestuario--;
+                    if (indicadorVestuario<1){
+                        indicadorVestuario = 5;
+                    }
+                }
+                if (bubbleComprar.dentro(x, y) && bubbleSeleccionada && !burbujaComprada) {
+                    if (total >= 500) {
+                        if (sound) {
+                            comprar.play();
+                        }
+                        burbujaComprada = true;
+                        total -= 500;
+                        bubbleSeleccionada = false;
+                        try {
+                            grabaSave();
+                        } catch (IOException ioe) {
+                            System.out.println("Error en " + ioe.toString());
+                        }
+                    } else {
+                        if (sound) {
+                            error.play();
+                        }
+                    }
+                }
+                if (bCohete.dentro(x, y) && coheteComprado) {
+                    coheteActivo = !coheteActivo;
+                    if (coheteActivo) {
+                        indicadorVestuario = 5;
+                        rosa = false;
+                        cafe = false;
+                        negro = false;
+                        azul = false;
+                    } else {
+                        indicadorVestuario = 1;
+                        rosa = false;
+                        cafe = false;
+                        negro = false;
+                        azul = true;
+                    }
                     try {
                         grabaSave();
                     } catch (IOException ioe) {
                         System.out.println("Error en " + ioe.toString());
                     }
                 }
+                if (bCohete.dentro(x, y) && coheteSeleccionado && !coheteComprado) {
+                    if (total >= 10000) {
+                        if (sound) {
+                            comprar.play();
+                        }
+                        coheteComprado = true;
+                        coheteActivo = true;
+                        indicadorVestuario = 5;
+                        rosa = false;
+                        cafe = false;
+                        negro = false;
+                        azul = true;
+                        total -= 10000;
+                        coheteSeleccionado = false;
+                        try {
+                            grabaSave();
+                        } catch (IOException ioe) {
+                            System.out.println("Error en " + ioe.toString());
+                        }
+                    } else {
+                        if (sound) {
+                            error.play();
+                        }
+                    }
+                }
             }
             if (instrucciones) {
-                if (bAbajo.dentro(e.getX(), e.getY())) {
+                if (bAbajo.dentro(x, y)) {
                     if (sound) {
                         vuelta.play();
                     }
@@ -1113,7 +1508,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
             }
             if (highscores) {
-                if (bArriba.dentro(e.getX(), e.getY())) {
+                if (bArriba.dentro(x, y)) {
                     if (sound) {
                         vuelta.play();
                     }
@@ -1123,7 +1518,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
         if (gameover) {
-            if (casita.dentro(e.getX(), e.getY())) {
+            if (casita.dentro(x, y)) {
                 menu = true;
                 principal = true;
                 jugar = false;
@@ -1140,7 +1535,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 musicaGameover.restart();
             }
 
-            if (restart.dentro(e.getX(), e.getY())) {
+            if (restart.dentro(x, y)) {
                 inicio = true;
                 jugar = true;
                 casita.setPosY(760);
@@ -1255,10 +1650,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 } else {
                     bIzq.setImagen(izqN);
                 }
-                if (bubbleComprar.dentro(e.getX(), e.getY())) {
+                if (bubbleComprar.dentro(x, y)) {
                     bubbleSeleccionada = true;
                 } else {
                     bubbleSeleccionada = false;
+                }
+                if (bCohete.dentro(x, y)) {
+                    coheteSeleccionado = true;
+                } else {
+                    coheteSeleccionado = false;
                 }
 
             }
@@ -1287,7 +1687,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         } catch (FileNotFoundException e) {
             File save = new File(archivoSave);
             PrintWriter fileOut = new PrintWriter(save);
-            fileOut.println("0,false");
+            fileOut.println("0,false,false,false,true,false,false,false,true,false,false,false");
             fileOut.close();
             fileIn = new BufferedReader(new FileReader(archivoSave));
         }
@@ -1297,6 +1697,16 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             arrsave = dato.split(",");
             total = (Integer.parseInt(arrsave[0]));
             burbujaComprada = (Boolean.parseBoolean(arrsave[1]));
+            coheteComprado = (Boolean.parseBoolean(arrsave[2]));
+            coheteActivo = (Boolean.parseBoolean(arrsave[3]));
+            azul = (Boolean.parseBoolean(arrsave[4]));
+            rosa = (Boolean.parseBoolean(arrsave[5]));
+            cafe = (Boolean.parseBoolean(arrsave[6]));
+            negro = (Boolean.parseBoolean(arrsave[7]));
+            azulComprado = (Boolean.parseBoolean(arrsave[8]));
+            rosaComprado = (Boolean.parseBoolean(arrsave[9]));
+            cafeComprado = (Boolean.parseBoolean(arrsave[10]));
+            negroComprado = (Boolean.parseBoolean(arrsave[11]));
             dato = fileIn.readLine();
         }
         fileIn.close();
@@ -1306,8 +1716,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
 
-        fileOut.print(total + ",");
-        fileOut.print(burbujaComprada);
+        fileOut.print(total + "," + burbujaComprada + "," + coheteComprado + "," + coheteActivo + ",");
+        fileOut.print(azul + "," + rosa + "," + cafe + "," + negro+",");
+        fileOut.print(azulComprado + "," + rosaComprado + "," + cafeComprado + "," + negroComprado);
         fileOut.close();
     }
 
@@ -1580,5 +1991,162 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
             crearenemigo = false;
         }
+    }
+
+    public void crearAnimaciones() {
+        azulCohete = new Animacion();
+        azulCohete.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJet.png")), 100);
+        azulCohete.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJet2.png")), 100);
+
+        azulCoheteAire = new Animacion();
+        azulCoheteAire.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetAire.png")), 100);
+
+        azulCoheteOn = new Animacion();
+        azulCoheteOn.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOn.png")), 100);
+        azulCoheteOn.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOn2.png")), 100);
+
+        azulCohetemedio = new Animacion();
+        azulCohetemedio.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetmedio.png")), 100);
+        azulCohetemedio.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetmedio2.png")), 100);
+
+        azulCoheteAiremedio = new Animacion();
+        azulCoheteAiremedio.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetAireMedio.png")), 100);
+
+        azulCoheteOnmedio = new Animacion();
+        azulCoheteOnmedio.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOnMedio.png")), 100);
+        azulCoheteOnmedio.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOnMedio2.png")), 100);
+
+        azulCohetelleno = new Animacion();
+        azulCohetelleno.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetlleno.png")), 100);
+        azulCohetelleno.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetlleno2.png")), 100);
+
+        azulCoheteAirelleno = new Animacion();
+        azulCoheteAirelleno.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetAireLleno.png")), 100);
+
+        azulCoheteOnlleno = new Animacion();
+        azulCoheteOnlleno.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOnLleno.png")), 100);
+        azulCoheteOnlleno.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJetOnLleno.png")), 100);
+
+        eleccion = new Animacion();
+        enem = new Animacion();
+
+        escudo = new Animacion();
+        escudo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bubble.png")), 100);
+
+        animA1 = new Animacion();                //crea animacion del carro
+        animA1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_1.png")), 100);
+        animA1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
+
+        animA2 = new Animacion();                //crea animacion del carro
+        animA2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_1.png")), 100);
+        animA2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_2.png")), 100);
+
+        animA3 = new Animacion();                //crea animacion del carro
+        animA3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_1.png")), 100);
+        animA3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png")), 100);
+
+        animR1 = new Animacion();                //crea animacion del carro
+        animR1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa1_1.png")), 100);
+        animR1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa1_2.png")), 100);
+
+        animR2 = new Animacion();                //crea animacion del carro
+        animR2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa2_1.png")), 100);
+        animR2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa2_2.png")), 100);
+
+        animR3 = new Animacion();                //crea animacion del carro
+        animR3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa3_1.png")), 100);
+        animR3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa3_2.png")), 100);
+        
+        animCa1 = new Animacion();                //crea animacion del carro
+        animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe1_1.png")), 100);
+        //animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
+
+        animCa2 = new Animacion();                //crea animacion del carro
+        animCa2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe2_1.png")), 100);
+        //animCa2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_2.png")), 100);
+
+        animCa3 = new Animacion();                //crea animacion del carro
+        animCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_1.png")), 100);
+        //nimCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png")), 100);
+        
+        animN1 = new Animacion();                //crea animacion del carro
+        animN1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro1_1.png")), 100);
+        animN1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro1_2.png")), 100);
+
+        animN2 = new Animacion();                //crea animacion del carro
+        animN2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro2_1.png")), 100);
+        animN2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro2_2.png")), 100);
+
+        animN3 = new Animacion();                //crea animacion del carro
+        animN3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro3_1.png")), 100);
+        animN3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro3_2.png")), 100);
+
+        animH = new Animacion();
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer1.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer3.png")), 50);
+        animH.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/hamburguer2.png")), 50);
+
+        animCan = new Animacion();
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can1.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can3.png")), 50);
+        animCan.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/can2.png")), 50);
+
+        animZ = new Animacion();
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot1.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot3.png")), 50);
+        animZ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/carrot2.png")), 50);
+
+        animIce = new Animacion();
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice1.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice3.png")), 50);
+        animIce.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/ice2.png")), 50);
+
+        animCoo = new Animacion();
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie1.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie3.png")), 50);
+        animCoo.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cookie2.png")), 50);
+
+        animQ = new Animacion();
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese1.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese3.png")), 50);
+        animQ.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/cheese2.png")), 50);
+
+        animF = new Animacion();
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish1.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish3.png")), 50);
+        animF.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/fish2.png")), 50);
+
+        animP = new Animacion();
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza1.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza3.png")), 50);
+        animP.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/pizza2.png")), 50);
+
+        animV = new Animacion();
+        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita1.png")), 80);
+        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
+        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita3.png")), 80);
+        animV.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/viejita2.png")), 80);
+
+        animN = new Animacion();
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño0.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño1.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño2.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño3.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño4.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño5.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño6.png")), 80);
+        animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/niño7.png")), 80);
+
+        animLamp = new Animacion();                //crea animacion del carro
+        animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);
+
     }
 }

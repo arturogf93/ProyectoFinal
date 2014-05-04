@@ -2058,15 +2058,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         
         animCa1 = new Animacion();                //crea animacion del carro
         animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe1_1.png")), 100);
-        //animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky1_2.png")), 100);
+        animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe1_2.png")), 100);
 
         animCa2 = new Animacion();                //crea animacion del carro
         animCa2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe2_1.png")), 100);
-        //animCa2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky2_2.png")), 100);
+        animCa2.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe2_2.png")), 100);
 
         animCa3 = new Animacion();                //crea animacion del carro
         animCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_1.png")), 100);
-        //nimCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky3_2.png")), 100);
+        animCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_2.png")), 100);
         
         animN1 = new Animacion();                //crea animacion del carro
         animN1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro1_1.png")), 100);

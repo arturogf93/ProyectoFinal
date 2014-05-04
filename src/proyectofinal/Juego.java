@@ -165,7 +165,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private boolean regreso;
     private boolean crearBurbuja;
     private boolean burbujaActiva;
-    
+
     private boolean seleccionado;
     private boolean comprado;
 
@@ -1088,22 +1088,22 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 g.drawImage(bCohete.getImagen(), bCohete.getPosX(), bCohete.getPosY(), this);
                 g.drawImage(derecha.getImagen(), derecha.getPosX(), derecha.getPosY(), this);
                 g.drawImage(vestuario.getImagen(), vestuario.getPosX(), vestuario.getPosY(), this);
-                if (indicadorVestuario ==1){
-                    g.drawString("Gratis", vestuario.getPosX()+30, vestuario.getPosY()+150);
-                } else if (indicadorVestuario == 2){
-                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
-                } else if (indicadorVestuario == 3){
-                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
-                } else if (indicadorVestuario == 4){
-                    g.drawString("$2000", vestuario.getPosX()+30, vestuario.getPosY()+150);
-                } else if (indicadorVestuario == 5){
-                    g.drawString("$10000", vestuario.getPosX()+25, vestuario.getPosY()+150);
-                } 
-                if (seleccionado){
-                    g.drawImage(check, vestuario.getPosX()+vestuario.getWidth()-7, vestuario.getPosY()+vestuario.getHeight()-15, this);
+                if (indicadorVestuario == 1) {
+                    g.drawString("Gratis", vestuario.getPosX() + 30, vestuario.getPosY() + 150);
+                } else if (indicadorVestuario == 2) {
+                    g.drawString("$2000", vestuario.getPosX() + 30, vestuario.getPosY() + 150);
+                } else if (indicadorVestuario == 3) {
+                    g.drawString("$2000", vestuario.getPosX() + 30, vestuario.getPosY() + 150);
+                } else if (indicadorVestuario == 4) {
+                    g.drawString("$2000", vestuario.getPosX() + 30, vestuario.getPosY() + 150);
+                } else if (indicadorVestuario == 5) {
+                    g.drawString("$10000", vestuario.getPosX() + 25, vestuario.getPosY() + 150);
                 }
-                if (!comprado){
-                    g.drawImage(lock, vestuario.getPosX()+vestuario.getWidth()/2-20, vestuario.getPosY()+vestuario.getHeight()/2-20, this);
+                if (seleccionado) {
+                    g.drawImage(check, vestuario.getPosX() + vestuario.getWidth() - 7, vestuario.getPosY() + vestuario.getHeight() - 15, this);
+                }
+                if (!comprado) {
+                    g.drawImage(lock, vestuario.getPosX() + vestuario.getWidth() / 2 - 20, vestuario.getPosY() + vestuario.getHeight() / 2 - 20, this);
                 }
                 g.drawImage(izquierda.getImagen(), izquierda.getPosX(), izquierda.getPosY(), this);
                 g.drawString("$10000", bCohete.getPosX() - 15, bCohete.getPosY() + bCohete.getHeight() + 21);
@@ -1125,7 +1125,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 if (vestuarioSeleccionado) {
                     g.drawImage(letreroVestuario, 430, 110, this);
                 }
-                
+
                 if (!transicion && !regreso) {
                     g.setFont(new Font("TimesRoman", Font.BOLD, 30));
                     g.setColor(Color.WHITE);
@@ -1236,9 +1236,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                 }
             }
             if (tienda) {
-                if (vestuario.dentro(x, y)){
+                if (vestuario.dentro(x, y)) {
                     if (indicadorVestuario == 1) {
-                        if (!azul&&azulComprado){
+                        if (!azul && azulComprado) {
                             azul = true;
                             cafe = false;
                             rosa = false;
@@ -1250,9 +1250,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 System.out.println("Error en " + ioe.toString());
                             }
                         }
-                        if (!azulComprado){
-                            if (total >=0){
-                                if (sound){
+                        if (!azulComprado) {
+                            if (total >= 0) {
+                                if (sound) {
                                     comprar.play();
                                 }
                                 azulComprado = true;
@@ -1267,14 +1267,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 } catch (IOException ioe) {
                                     System.out.println("Error en " + ioe.toString());
                                 }
-                            } else{
-                                if (sound){
+                            } else {
+                                if (sound) {
                                     error.play();
                                 }
                             }
                         }
                     } else if (indicadorVestuario == 2) {
-                        if (!rosa&&rosaComprado){
+                        if (!rosa && rosaComprado) {
                             azul = false;
                             cafe = false;
                             rosa = true;
@@ -1286,9 +1286,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 System.out.println("Error en " + ioe.toString());
                             }
                         }
-                        if (!rosaComprado){
-                            if (total>=2000){
-                                if (sound){
+                        if (!rosaComprado) {
+                            if (total >= 2000) {
+                                if (sound) {
                                     comprar.play();
                                 }
                                 rosaComprado = true;
@@ -1303,14 +1303,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 } catch (IOException ioe) {
                                     System.out.println("Error en " + ioe.toString());
                                 }
-                            }else{
-                                if (sound){
+                            } else {
+                                if (sound) {
                                     error.play();
                                 }
                             }
                         }
                     } else if (indicadorVestuario == 3) {
-                        if (!cafe&&cafeComprado){
+                        if (!cafe && cafeComprado) {
                             azul = false;
                             cafe = true;
                             rosa = false;
@@ -1322,9 +1322,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 System.out.println("Error en " + ioe.toString());
                             }
                         }
-                        if (!cafeComprado){
-                            if (total>=2000){
-                                if (sound){
+                        if (!cafeComprado) {
+                            if (total >= 2000) {
+                                if (sound) {
                                     comprar.play();
                                 }
                                 cafeComprado = true;
@@ -1339,14 +1339,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 } catch (IOException ioe) {
                                     System.out.println("Error en " + ioe.toString());
                                 }
-                            }else{
-                                if (sound){
+                            } else {
+                                if (sound) {
                                     error.play();
                                 }
                             }
                         }
                     } else if (indicadorVestuario == 4) {
-                        if (!negro&&negroComprado){
+                        if (!negro && negroComprado) {
                             azul = false;
                             cafe = false;
                             rosa = false;
@@ -1358,9 +1358,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 System.out.println("Error en " + ioe.toString());
                             }
                         }
-                        if (!negroComprado){
-                            if (total>=2000){
-                                if (sound){
+                        if (!negroComprado) {
+                            if (total >= 2000) {
+                                if (sound) {
                                     comprar.play();
                                 }
                                 negroComprado = true;
@@ -1375,14 +1375,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 } catch (IOException ioe) {
                                     System.out.println("Error en " + ioe.toString());
                                 }
-                            }else{
-                                if (sound){
+                            } else {
+                                if (sound) {
                                     error.play();
                                 }
                             }
                         }
                     } else if (indicadorVestuario == 5) {
-                        if (!coheteActivo&&coheteComprado){
+                        if (!coheteActivo && coheteComprado) {
                             azul = false;
                             cafe = false;
                             rosa = false;
@@ -1394,9 +1394,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 System.out.println("Error en " + ioe.toString());
                             }
                         }
-                        if (!coheteComprado){
-                            if (total>=10000){
-                                if (sound){
+                        if (!coheteComprado) {
+                            if (total >= 10000) {
+                                if (sound) {
                                     comprar.play();
                                 }
                                 coheteComprado = true;
@@ -1411,8 +1411,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                                 } catch (IOException ioe) {
                                     System.out.println("Error en " + ioe.toString());
                                 }
-                            }else{
-                                if (sound){
+                            } else {
+                                if (sound) {
                                     error.play();
                                 }
                             }
@@ -1426,15 +1426,15 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     regreso = true;
                     principal = true;
                 }
-                if (derecha.dentro(x, y)){
+                if (derecha.dentro(x, y)) {
                     indicadorVestuario++;
-                    if (indicadorVestuario>5){
+                    if (indicadorVestuario > 5) {
                         indicadorVestuario = 1;
                     }
                 }
-                if (izquierda.dentro(x, y)){
+                if (izquierda.dentro(x, y)) {
                     indicadorVestuario--;
-                    if (indicadorVestuario<1){
+                    if (indicadorVestuario < 1) {
                         indicadorVestuario = 5;
                     }
                 }
@@ -1650,7 +1650,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                     bDer.setImagen(derN);
                 }
             }
-            if (tienda) {                
+            if (tienda) {
                 if (bIzq.dentro(x, y)) {
                     bIzq.setImagen(izqS);
                 } else {
@@ -1716,7 +1716,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
 
         fileOut.print(total + "," + burbujaComprada + "," + coheteComprado + "," + coheteActivo + ",");
-        fileOut.print(azul + "," + rosa + "," + cafe + "," + negro+",");
+        fileOut.print(azul + "," + rosa + "," + cafe + "," + negro + ",");
         fileOut.print(azulComprado + "," + rosaComprado + "," + cafeComprado + "," + negroComprado);
         fileOut.close();
     }
@@ -2055,7 +2055,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animR3 = new Animacion();                //crea animacion del carro
         animR3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa3_1.png")), 100);
         animR3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyrosa3_2.png")), 100);
-        
+
         animCa1 = new Animacion();                //crea animacion del carro
         animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe1_1.png")), 100);
         animCa1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe1_2.png")), 100);
@@ -2067,7 +2067,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animCa3 = new Animacion();                //crea animacion del carro
         animCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_1.png")), 100);
         animCa3.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskycafe3_2.png")), 100);
-        
+
         animN1 = new Animacion();                //crea animacion del carro
         animN1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro1_1.png")), 100);
         animN1.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskynegro1_2.png")), 100);

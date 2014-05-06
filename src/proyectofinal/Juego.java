@@ -2050,11 +2050,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * Metodo <I>CrearEnemigos</I> genera a los enemigos de manera aleatoria. Tambien controla 
      * el momento en el que apareceran, a partir de cierta cantidad de puntos el niño y la abuela 
      * se desplazaran de derecha a izquiera a diferentes velocidades y al aumentar la cantidad 
-     * de puntos el foco se movera de la misma manera a la velocidad del fonfo. Se cargaran varias 
-     * imagenes de cada enemigo para crear la animacion.
-     * 
-     * 
-     * 
+     * de puntos el foco se movera de la misma manera a la velocidad del fonfo. 
     */
     public void CrearEnemigos() {
         if (!crearenemigo && enemigos.size() < 2) {
@@ -2075,6 +2071,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             crearenemigo = false;
         }
     }
+    
+     /**
+     * El Metodo <I>CrearAnimaciones</I> Carga varias imagenes de los 
+     * personajes y objetos para hacer las animaciones del juego.
+     * 
+    */
 
     public void crearAnimaciones() {
         azulCohete = new Animacion();

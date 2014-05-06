@@ -20,7 +20,9 @@ public class Boton {
     protected Image imagen;       //Objeto de tipo animacion
 
     //@param  posX es para saber la posicion x de tipo <code>int</code>
-    //@param  posY es para saber la posicion y detipo <code>int</code>
+    //@param  posY es para saber la posicion y de tipo <code>int</code>
+    //@param  imag es para asignarle una imagen a los botones de tipo <code>Image</code>
+
     public Boton(int posX, int posY, Image imag) { //constructor 
         this.posX = posX;
         this.posY = posY;

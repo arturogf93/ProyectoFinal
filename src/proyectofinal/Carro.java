@@ -7,13 +7,18 @@ package proyectofinal;
 
 /**
  *
- * @author Abraham
+ * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
  */
 public class Carro extends Base {
 
     private int velY;
     private boolean suelo;
-
+    
+    
+    //@param  posX es para saber la posicion x de tipo <code>int</code>
+    //@param  posY es para saber la posicion y de tipo <code>int</code>
+    //@param  anim para asignarle una animacion al objeto de tipo <code>Animacion</code>
+    //@param  velY es la velocidad nueva de tipo <code>int</code>
     public Carro(int posX, int posY, Animacion anim, int velY) {
         super(posX, posY, anim);
         this.velY = velY;

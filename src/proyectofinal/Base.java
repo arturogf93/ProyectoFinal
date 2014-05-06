@@ -7,7 +7,8 @@ package proyectofinal;
  */
 /**
  *
- * @author Abraham
+ *  * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
+
  */
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -20,7 +21,8 @@ public class Base extends Animacion {
     protected Animacion imagenes;       //Objeto de tipo animacion
 
     //@param  posX es para saber la posicion x de tipo <code>int</code>
-    //@param  posY es para saber la posicion y detipo <code>int</code>
+    //@param  posY es para saber la posicion y de tipo <code>int</code>
+    //@param  anim para asignarle una animacion al objeto de tipo <code>Animacion</code>
     public Base(int posX, int posY, Animacion anim) { //constructor 
         this.posX = posX;
         this.posY = posY;

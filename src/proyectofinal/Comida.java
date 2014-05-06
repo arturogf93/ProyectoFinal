@@ -7,7 +7,8 @@ package proyectofinal;
 
 /**
  *
- * @author Abraham
+ * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
+
  */
 public class Comida extends Base {
 

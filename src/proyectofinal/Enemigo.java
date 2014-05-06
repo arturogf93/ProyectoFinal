@@ -14,6 +14,10 @@ public class Enemigo extends Base {
 
     private int velocidad;
 
+    //@param  posX es para saber la posicion x de tipo <code>int</code>
+    //@param  posY es para saber la posicion y de tipo <code>int</code>
+    //@param  anim para asignarle una animacion al objeto de tipo <code>Animacion</code>
+    //@param  velocidad es la velocidad nueva de tipo <code>int</code>
     public Enemigo(int posX, int posY, Animacion anim, int velocidad) {
         super(posX, posY, anim);
         this.velocidad = velocidad;

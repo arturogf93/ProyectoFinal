@@ -14,6 +14,9 @@ public class Podrida extends Base {
 
     private final int menos;
 
+    //@param  posX es para saber la posicion x de tipo <code>int</code>
+    //@param  posY es para saber la posicion y de tipo <code>int</code>
+    //@param  anim para asignarle una animacion al objeto de tipo <code>Animacion</code>
     public Podrida(int posX, int posY, Animacion anim) {
         super(posX, posY, anim);
         menos = -1;

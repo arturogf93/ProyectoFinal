@@ -475,8 +475,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     /**
-     * Metodo usado para actualizar la posicion de objetos elefante y raton.
+     * Metodo <I>actualiza</I> usado para actualizar la posicion de objetos. <code>JFrame</code>.<P>
+     * El personaje principal actualiza su posicion cuando el usuario presiona la tecla space para saltar
+     * o cuando presiona las teclas derecha o izquiera, tambien se actualiza el
+     * fondo en una velocidad ascendente dependiendo de los puntos acumulados
+     * y por ultimo los enemigos avanzan de derecha a izquierda en un patron ondeterminado
      *
+     * 
      */
     public void actualiza() throws IOException {
         
@@ -884,8 +889,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     /**
-     * Metodo usado para checar las colisiones del objeto elefante y raton con
-     * las orillas del <code>Applet</code>.
+     * Metodo usado para checar las colisiones objeto bueno con los enemigos, la comida y
+     * las orillas del <code>Applet</code>. Al chocar con cualquiera de los tres tipos 
+     * de enemigos perderas y el juego se reiniciara o al chocar con tres comidas podridas.
+     * Al chocar con la comida esta desaparecera y se le sumaran los puntos al acumulado.
      */
     public void checaColision() throws IOException {
         for (int i = 0; i < comida.size(); i++) {
@@ -960,7 +967,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * Metodo <I>keyPressed</I> sobrescrito de la interface
      * <code>KeyListener</code>.<P>
      * En este metodo maneja el evento que se genera al presionar cualquier la
-     * tecla.
+     * tecla. Al presionar space, el personaje principal saltara, con los botones
+     * derecha e izquierda se movera y la tecla p sirve para parar el juego.
      *
      * @param e es el <code>evento</code> generado al presionar las teclas.
      */
@@ -1708,6 +1716,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
     }
+    
+    /**
+    Metodo <I>leerSave</I> sobrescrito de la clase <code>Thread</code>.<P>
+     * Este metodo lee los puntos que tienes acumulados de las comidas para checar 
+     * si puedes comprar los objetos de la tienda y checa cuales ya compraste y cuales te faltan.
+     * 
+    */
 
     public void leerSave() throws IOException {
 
@@ -1741,7 +1756,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         fileIn.close();
     }
-
+    
+    
+  /**
+    Metodo <I>grabaSave</I> sobrescrito de la clase <code>Thread</code>.<P>
+     *Este metodo le avisa al jugador cuales objetos de la tienda ya compro y cuales todavia no
+     * al imprimir strings que te indican el estado de compra.
+    */
+    
     public void grabaSave() throws IOException {
 
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
@@ -1751,7 +1773,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fileOut.print(azulComprado + "," + rosaComprado + "," + cafeComprado + "," + negroComprado);
         fileOut.close();
     }
-
+    
+    /**
+     * Metodo <I>leerHighscores</I> despliga los diez mejores resultados del juego 
+     * en el menu para hacer esto, abre el archivo que genera el metodo grabaHighscores y 
+     * pasa la informacion al juego.
+     * 
+    */
+    
     public void leerHighscores() throws IOException {
 
         BufferedReader fileIn;
@@ -1778,6 +1807,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fileIn.close();
     }
 
+     /**
+    Metodo <I>grabaHighscores</I> sobrescrito de la clase <code>Thread</code>.<P>
+     * En este metodo crea un archivo de texto que guarda los puntajes mas altos de
+    los jugadores, al perder en el juego este metodo verificara si tu puntaje 
+    entra en el top 10 y te pide tu nombre para guardarlo, en caso de que no entre en el rango 
+    de los diez mejores, simplemente no se ejecuta.
+    */
     public void grabaHighscores() throws IOException {
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoHighscores));
         String[] auxNombres = new String[10];
@@ -1809,6 +1845,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         nombre = null;
     }
 
+      /**
+     * Metodo <I>CrearComida</I> crea un patron predeterminado para la posicion de las comidas
+     * que pueden aparecer en forma diagonal u horizontal y ademas pueden estar abajo, enmedio o 
+     * arriba del <code>JFrame</code>. Ademas le asigna un valor especifico a cada tipo de comida.
+     * 
+    */
     public void CrearComida() {
         if (crearcomida) {
             int tipo = (int) (Math.random() * 25);
@@ -2002,7 +2044,18 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             crearcomida = false;
         }
     }
-
+    
+    
+  /**
+     * Metodo <I>CrearEnemigos</I> genera a los enemigos de manera aleatoria. Tambien controla 
+     * el momento en el que apareceran, a partir de cierta cantidad de puntos el niño y la abuela 
+     * se desplazaran de derecha a izquiera a diferentes velocidades y al aumentar la cantidad 
+     * de puntos el foco se movera de la misma manera a la velocidad del fonfo. Se cargaran varias 
+     * imagenes de cada enemigo para crear la animacion.
+     * 
+     * 
+     * 
+    */
     public void CrearEnemigos() {
         if (!crearenemigo && enemigos.size() < 2) {
             aleatorioEnemigo = (int) (Math.random() * 60);

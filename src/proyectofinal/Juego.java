@@ -49,6 +49,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private final int[][] patron7 = {{1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800}, {520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520, 520}};
 
     private int indicadorVestuario;
+    private int fondoX;
     private int fondo1;
     private int fondo2;
     private int fondo3;
@@ -69,6 +70,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private int auxfood;
     private int x;
     private int y;
+    private int huskyIx;
+    private int huskyIy;
 
     private Carro carro;
 
@@ -80,7 +83,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
 
     private LinkedList<Base> burbuja;
 
+    private Image huskyI;
     private Image carrito;
+    private Image fondoI;
     private Image fondo01;
     private Image fondo02;
     private Image fondo03;
@@ -250,6 +255,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     private SoundClip brinco2;
     private SoundClip comprar;
     private SoundClip error;
+    private SoundClip jetpackS;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>JFrame</code>.<P>
@@ -259,6 +265,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @throws java.io.IOException
      */
     public void init() throws IOException {
+        fondoX=0;
         auxfood = 0;
         arrNombres = new String[10];
         arrScores = new int[10];
@@ -274,7 +281,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
-
+        
+        huskyI=Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky0.png"));
+        fondoI= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/inicio0.png"));
         der = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/derecha.png"));
         izq = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/izquierda.png"));
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Cart.png"));
@@ -388,6 +397,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         menuY = -600;
         velTransicionY = 20;
         velTransicionX = 40;
+        huskyIx=300;
+        huskyIy=300;
 
         crearAnimaciones();
 
@@ -405,6 +416,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         brinco2 = new SoundClip("Sounds/brinco.wav");
         comprar = new SoundClip("Sounds/Comprar.wav");
         error = new SoundClip("Sounds/error.wav");
+        jetpackS = new SoundClip("Sounds/jetpackS1.wav");
     }
 
     /**
@@ -467,6 +479,19 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      *
      */
     public void actualiza() throws IOException {
+        
+     
+        fondoX++;
+        
+        if(fondoX>100){
+        huskyIy--;
+        jetpackS.play();
+        }
+       if(fondoX>200){
+         huskyIx=huskyIx+10;
+       }
+  
+                
         //if(movimiento){
         long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
 
@@ -879,7 +904,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         for (int i = 0; i < enemigos.size(); i++) {
             Enemigo actual = enemigos.get(i);
-            if (actual.intersecta(carro)) {
+            if (actual.intersecta(carro)&&!burbujaActiva) {
                 vidas = 0;
             }
             if (burbujaActiva) {
@@ -1025,6 +1050,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setColor(Color.RED);
         if (jugar) {
             //Fondo
+            
             g.drawImage(fondo00, 0, 0, this);
             g.drawImage(fondo01, fondo1, 0, this);
             g.drawImage(fondo02, fondo2, 0, this);
@@ -1067,9 +1093,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (pausa) {
                 g.drawImage(imagenpausa, this.getWidth() / 2 - imagenpausa.getWidth(this) / 2, this.getHeight() / 2 - imagenpausa.getHeight(this) / 2, this);
             }
-        } else if (menu) {
+            
+        } else if (menu) {  
             g.drawImage(menuPrincipal, menuX, menuY, this);
             if (principal) {
+              
                 g.drawImage(bCreditos.getImagen(), bCreditos.getPosX(), bCreditos.getPosY(), this);
                 g.drawImage(bTienda.getImagen(), bTienda.getPosX(), bTienda.getPosY(), this);
                 g.drawImage(bPlay.getImagen(), bPlay.getPosX(), bPlay.getPosY(), this);
@@ -1148,6 +1176,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         g.drawString("" + arrScores[i], 960, 180 + (i * 35));
                     }
                 }
+            }if(fondoX<380){
+            g.drawImage(fondoI,0,0,this);
+            g.drawImage(huskyI,huskyIx,huskyIy,this);
             }
         } else {
             //Da un mensaje mientras se carga el dibujo	

@@ -39,26 +39,38 @@ public class SoundClip {
         }
     }
 
-    //@param  filename es para saber el nombre del archivo de sonido de tipo <code>string</code>
+    /**
+     * 
+     * @param filename es para saber el nombre del archivo de sonido de tipo <code>string</code> 
+     */
     public SoundClip(String filename) {
 
         this();
         load(filename);
     }
 
-    //@param  looping es para reproducir el sonido en un cliclo y es de tipo <code>boolean</code>
+    /**
+     * 
+     * @param looping es para reproducir el sonido en un cliclo y es de tipo <code>boolean</code>
+     */
     public void setLooping(boolean looping) {
 
         this.looping = looping;
     }
 
-    //@param  repeat es para que se repita el sonido y es de tipo <code>int</code>
+    /**
+     * 
+     * @param repeat es para que se repita el sonido y es de tipo <code>int</code>
+     */
     public void setRepeat(int repeat) {
 
         this.repeat = repeat;
     }
 
-    //@param  filename es para saber el nombre del archivo de sonido de tipo <code>string</code>
+    /**
+     * 
+     * @param filename es para saber el nombre del archivo de sonido de tipo <code>string</code>
+     */
     public void setFilename(String filename) {
 
         this.filename = filename;
@@ -84,7 +96,10 @@ public class SoundClip {
         return filename;
     }
 
-    //@param  filename es para saber el nombre del archivo de sonido de tipo <code>string</code>
+    /**
+     * 
+     * @param filename es para saber el nombre del archivo de sonido de tipo <code>string</code>
+     */
     private URL getURL(String filename) {
 
         URL url = null;
@@ -102,7 +117,10 @@ public class SoundClip {
         return (boolean) (sample != null);
     }
 
-    //@param  audiofile es para cargar el archivo de sonido <code>string</code>
+    /**
+     * 
+     * @param audiofile es para cargar el archivo de sonido <code>string</code>
+     */
     public boolean load(String audiofile) {
 
         try {

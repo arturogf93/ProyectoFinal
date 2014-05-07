@@ -13,6 +13,10 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
+/**
+ * La clase Boton sirve para generar botones y manejar mas facil los cambios de
+ * imagen y los clic encima de ellos.
+ */
 public class Boton {
 
     private int posX;                   //posicion de x del objeto
@@ -22,7 +26,6 @@ public class Boton {
     //@param  posX es para saber la posicion x de tipo <code>int</code>
     //@param  posY es para saber la posicion y de tipo <code>int</code>
     //@param  imag es para asignarle una imagen a los botones de tipo <code>Image</code>
-
     public Boton(int posX, int posY, Image imag) { //constructor 
         this.posX = posX;
         this.posY = posY;

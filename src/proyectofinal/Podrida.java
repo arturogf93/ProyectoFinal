@@ -7,8 +7,11 @@ package proyectofinal;
 
 /**
  *
- *@author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
-
+ * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles  *
+ */
+/**
+ * La clase podrida es para manejar las comidas malas que te hacen perder vidas,
+ * Mneja su posicion y su animacion
  */
 public class Podrida extends Base {
 

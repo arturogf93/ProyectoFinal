@@ -12,6 +12,9 @@ package proyectofinal;
 import java.io.IOException;
 import javax.swing.JFrame;
 
+/**
+ * Sirve para crear el juego en forma de Jframe
+ */
 public class ProyectoFinal {
 
     /**

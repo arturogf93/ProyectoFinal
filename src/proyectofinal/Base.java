@@ -7,13 +7,17 @@ package proyectofinal;
  */
 /**
  *
- *  * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
-
+ *  * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David
+ * Valles  *
  */
 import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
+/**
+ * La clase Base sirve como una clase abstracta para otras clases y asi poder
+ * heredarla
+ */
 public class Base extends Animacion {
 
     private int posX;                   //posicion de x del objeto

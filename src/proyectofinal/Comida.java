@@ -7,11 +7,13 @@ package proyectofinal;
 
 /**
  *
- * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
-
+ * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles  *
  */
-
-
+/**
+ * La clase Comida es para poder generar comidas de diferentes tipos y con
+ * diferente valor para el personaje principal. Maneja la posicion y su
+ * animacion
+ */
 public class Comida extends Base {
 
     private int valor;

@@ -28,6 +28,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+/**
+ * La clase juego es la clase principal donde se genera el juego y donde se
+ * mandan llamar todas las diferentes funciones
+ */
 public class Juego extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     public Juego() throws IOException {
@@ -265,7 +269,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * @throws java.io.IOException
      */
     public void init() throws IOException {
-        fondoX=0;
+        fondoX = 0;
         auxfood = 0;
         arrNombres = new String[10];
         arrScores = new int[10];
@@ -281,9 +285,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         addKeyListener(this);           //Uso de las teclas
         addMouseListener(this);          //Uso de las teclas
         addMouseMotionListener(this);      //Uso de las teclas
-        
-        huskyI=Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky0.png"));
-        fondoI= Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/inicio0.png"));
+
+        huskyI = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/husky0.png"));
+        fondoI = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/inicio0.png"));
         der = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/derecha.png"));
         izq = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/izquierda.png"));
         carrito = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Cart.png"));
@@ -397,8 +401,8 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         menuY = -600;
         velTransicionY = 20;
         velTransicionX = 40;
-        huskyIx=300;
-        huskyIy=300;
+        huskyIx = 300;
+        huskyIy = 300;
 
         crearAnimaciones();
 
@@ -475,28 +479,28 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     /**
-     * Metodo <I>actualiza</I> usado para actualizar la posicion de objetos. <code>JFrame</code>.<P>
-     * El personaje principal actualiza su posicion cuando el usuario presiona la tecla space para saltar
-     * o cuando presiona las teclas derecha o izquiera, tambien se actualiza el
-     * fondo en una velocidad ascendente dependiendo de los puntos acumulados
-     * y por ultimo los enemigos avanzan de derecha a izquierda en un patron ondeterminado
+     * Metodo <I>actualiza</I> usado para actualizar la posicion de objetos.
+     * <code>JFrame</code>.<P>
+     * El personaje principal actualiza su posicion cuando el usuario presiona
+     * la tecla space para saltar o cuando presiona las teclas derecha o
+     * izquiera, tambien se actualiza el fondo en una velocidad ascendente
+     * dependiendo de los puntos acumulados y por ultimo los enemigos avanzan de
+     * derecha a izquierda en un patron ondeterminado
      *
-     * 
+     *
      */
     public void actualiza() throws IOException {
-        
-     
+
         fondoX++;
-        
-        if(fondoX>100){
-        huskyIy--;
-        jetpackS.play();
+
+        if (fondoX > 100) {
+            huskyIy--;
+            jetpackS.play();
         }
-       if(fondoX>200){
-         huskyIx=huskyIx+10;
-       }
-  
-                
+        if (fondoX > 200) {
+            huskyIx = huskyIx + 10;
+        }
+
         //if(movimiento){
         long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
 
@@ -889,10 +893,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
     }
 
     /**
-     * Metodo usado para checar las colisiones objeto bueno con los enemigos, la comida y
-     * las orillas del <code>Applet</code>. Al chocar con cualquiera de los tres tipos 
-     * de enemigos perderas y el juego se reiniciara o al chocar con tres comidas podridas.
-     * Al chocar con la comida esta desaparecera y se le sumaran los puntos al acumulado.
+     * Metodo usado para checar las colisiones objeto bueno con los enemigos, la
+     * comida y las orillas del <code>Applet</code>. Al chocar con cualquiera de
+     * los tres tipos de enemigos perderas y el juego se reiniciara o al chocar
+     * con tres comidas podridas. Al chocar con la comida esta desaparecera y se
+     * le sumaran los puntos al acumulado.
      */
     public void checaColision() throws IOException {
         for (int i = 0; i < comida.size(); i++) {
@@ -911,7 +916,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         for (int i = 0; i < enemigos.size(); i++) {
             Enemigo actual = enemigos.get(i);
-            if (actual.intersecta(carro)&&!burbujaActiva) {
+            if (actual.intersecta(carro) && !burbujaActiva) {
                 vidas = 0;
             }
             if (burbujaActiva) {
@@ -967,8 +972,9 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
      * Metodo <I>keyPressed</I> sobrescrito de la interface
      * <code>KeyListener</code>.<P>
      * En este metodo maneja el evento que se genera al presionar cualquier la
-     * tecla. Al presionar space, el personaje principal saltara, con los botones
-     * derecha e izquierda se movera y la tecla p sirve para parar el juego.
+     * tecla. Al presionar space, el personaje principal saltara, con los
+     * botones derecha e izquierda se movera y la tecla p sirve para parar el
+     * juego.
      *
      * @param e es el <code>evento</code> generado al presionar las teclas.
      */
@@ -1058,7 +1064,7 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         g.setColor(Color.RED);
         if (jugar) {
             //Fondo
-            
+
             g.drawImage(fondo00, 0, 0, this);
             g.drawImage(fondo01, fondo1, 0, this);
             g.drawImage(fondo02, fondo2, 0, this);
@@ -1101,11 +1107,11 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             if (pausa) {
                 g.drawImage(imagenpausa, this.getWidth() / 2 - imagenpausa.getWidth(this) / 2, this.getHeight() / 2 - imagenpausa.getHeight(this) / 2, this);
             }
-            
-        } else if (menu) {  
+
+        } else if (menu) {
             g.drawImage(menuPrincipal, menuX, menuY, this);
             if (principal) {
-              
+
                 g.drawImage(bCreditos.getImagen(), bCreditos.getPosX(), bCreditos.getPosY(), this);
                 g.drawImage(bTienda.getImagen(), bTienda.getPosX(), bTienda.getPosY(), this);
                 g.drawImage(bPlay.getImagen(), bPlay.getPosX(), bPlay.getPosY(), this);
@@ -1184,9 +1190,10 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
                         g.drawString("" + arrScores[i], 960, 180 + (i * 35));
                     }
                 }
-            }if(fondoX<380){
-            g.drawImage(fondoI,0,0,this);
-            g.drawImage(huskyI,huskyIx,huskyIy,this);
+            }
+            if (fondoX < 380) {
+                g.drawImage(fondoI, 0, 0, this);
+                g.drawImage(huskyI, huskyIx, huskyIy, this);
             }
         } else {
             //Da un mensaje mientras se carga el dibujo	
@@ -1716,14 +1723,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             }
         }
     }
-    
-    /**
-    Metodo <I>leerSave</I> sobrescrito de la clase <code>Thread</code>.<P>
-     * Este metodo lee los puntos que tienes acumulados de las comidas para checar 
-     * si puedes comprar los objetos de la tienda y checa cuales ya compraste y cuales te faltan.
-     * 
-    */
 
+    /**
+     * Metodo <I>leerSave</I> sobrescrito de la clase <code>Thread</code>.<P>
+     * Este metodo lee los puntos que tienes acumulados de las comidas para
+     * checar si puedes comprar los objetos de la tienda y checa cuales ya
+     * compraste y cuales te faltan.
+     *
+     */
     public void leerSave() throws IOException {
 
         BufferedReader fileIn;
@@ -1756,14 +1763,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         }
         fileIn.close();
     }
-    
-    
-  /**
-    Metodo <I>grabaSave</I> sobrescrito de la clase <code>Thread</code>.<P>
-     *Este metodo le avisa al jugador cuales objetos de la tienda ya compro y cuales todavia no
-     * al imprimir strings que te indican el estado de compra.
-    */
-    
+
+    /**
+     * Metodo <I>grabaSave</I> sobrescrito de la clase <code>Thread</code>.<P>
+     * Este metodo le avisa al jugador cuales objetos de la tienda ya compro y
+     * cuales todavia no al imprimir strings que te indican el estado de compra.
+     */
     public void grabaSave() throws IOException {
 
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoSave));
@@ -1773,14 +1778,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fileOut.print(azulComprado + "," + rosaComprado + "," + cafeComprado + "," + negroComprado);
         fileOut.close();
     }
-    
+
     /**
-     * Metodo <I>leerHighscores</I> despliga los diez mejores resultados del juego 
-     * en el menu para hacer esto, abre el archivo que genera el metodo grabaHighscores y 
-     * pasa la informacion al juego.
-     * 
-    */
-    
+     * Metodo <I>leerHighscores</I> despliga los diez mejores resultados del
+     * juego en el menu para hacer esto, abre el archivo que genera el metodo
+     * grabaHighscores y pasa la informacion al juego.
+     *
+     */
     public void leerHighscores() throws IOException {
 
         BufferedReader fileIn;
@@ -1807,13 +1811,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         fileIn.close();
     }
 
-     /**
-    Metodo <I>grabaHighscores</I> sobrescrito de la clase <code>Thread</code>.<P>
-     * En este metodo crea un archivo de texto que guarda los puntajes mas altos de
-    los jugadores, al perder en el juego este metodo verificara si tu puntaje 
-    entra en el top 10 y te pide tu nombre para guardarlo, en caso de que no entre en el rango 
-    de los diez mejores, simplemente no se ejecuta.
-    */
+    /**
+     * Metodo <I>grabaHighscores</I> sobrescrito de la clase
+     * <code>Thread</code>.<P>
+     * En este metodo crea un archivo de texto que guarda los puntajes mas altos
+     * de los jugadores, al perder en el juego este metodo verificara si tu
+     * puntaje entra en el top 10 y te pide tu nombre para guardarlo, en caso de
+     * que no entre en el rango de los diez mejores, simplemente no se ejecuta.
+     */
     public void grabaHighscores() throws IOException {
         PrintWriter fileOut = new PrintWriter(new FileWriter(archivoHighscores));
         String[] auxNombres = new String[10];
@@ -1845,12 +1850,13 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         nombre = null;
     }
 
-      /**
-     * Metodo <I>CrearComida</I> crea un patron predeterminado para la posicion de las comidas
-     * que pueden aparecer en forma diagonal u horizontal y ademas pueden estar abajo, enmedio o 
-     * arriba del <code>JFrame</code>. Ademas le asigna un valor especifico a cada tipo de comida.
-     * 
-    */
+    /**
+     * Metodo <I>CrearComida</I> crea un patron predeterminado para la posicion
+     * de las comidas que pueden aparecer en forma diagonal u horizontal y
+     * ademas pueden estar abajo, enmedio o arriba del <code>JFrame</code>.
+     * Ademas le asigna un valor especifico a cada tipo de comida.
+     *
+     */
     public void CrearComida() {
         if (crearcomida) {
             int tipo = (int) (Math.random() * 25);
@@ -2044,14 +2050,14 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             crearcomida = false;
         }
     }
-    
-    
-  /**
-     * Metodo <I>CrearEnemigos</I> genera a los enemigos de manera aleatoria. Tambien controla 
-     * el momento en el que apareceran, a partir de cierta cantidad de puntos el niño y la abuela 
-     * se desplazaran de derecha a izquiera a diferentes velocidades y al aumentar la cantidad 
-     * de puntos el foco se movera de la misma manera a la velocidad del fonfo. 
-    */
+
+    /**
+     * Metodo <I>CrearEnemigos</I> genera a los enemigos de manera aleatoria.
+     * Tambien controla el momento en el que apareceran, a partir de cierta
+     * cantidad de puntos el niño y la abuela se desplazaran de derecha a
+     * izquiera a diferentes velocidades y al aumentar la cantidad de puntos el
+     * foco se movera de la misma manera a la velocidad del fonfo.
+     */
     public void CrearEnemigos() {
         if (!crearenemigo && enemigos.size() < 2) {
             aleatorioEnemigo = (int) (Math.random() * 60);
@@ -2071,13 +2077,12 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
             crearenemigo = false;
         }
     }
-    
-     /**
-     * El Metodo <I>CrearAnimaciones</I> Carga varias imagenes de los 
-     * personajes y objetos para hacer las animaciones del juego.
-     * 
-    */
 
+    /**
+     * El Metodo <I>CrearAnimaciones</I> Carga varias imagenes de los personajes
+     * y objetos para hacer las animaciones del juego.
+     *
+     */
     public void crearAnimaciones() {
         azulCohete = new Animacion();
         azulCohete.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/huskyJet.png")), 100);
@@ -2224,7 +2229,6 @@ public class Juego extends JFrame implements Runnable, KeyListener, MouseListene
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/empleado1.png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/empleado3 (1).png")), 80);
         animN.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/empleado2.png")), 80);
-   
 
         animLamp = new Animacion();                //crea animacion del carro
         animLamp.sumaCuadro(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/lampara.png")), 80);

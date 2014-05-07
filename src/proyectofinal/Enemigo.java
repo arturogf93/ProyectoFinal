@@ -7,8 +7,11 @@ package proyectofinal;
 
 /**
  *
- * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles 
-
+ * @author Abraham Rodriguez, Dagoberto Gonzalez, Arturo Gonzalez, David Valles  *
+ */
+/**
+ * La clase Base maneja la posicion y las animaciones de cada tipo de enemigo,
+ * ademas de su velocidad
  */
 public class Enemigo extends Base {
 

@@ -101,7 +101,7 @@ public class Base extends Animacion {
     }
 
     /**
-     * 
+     * Metodo para modificar la animacion de un objeto
      * @param anim es la animacion nueva <code>Animacion</code>
      */
     public void setImagenes(Animacion anim) {    //metodo para obtener la animacion del objeto
@@ -117,7 +117,7 @@ public class Base extends Animacion {
     }
 
     /**
-     * 
+     * Metodo para saber si dos objetos intersectan
      * @param obj es para conocer el objeto con el que se checara si se intersectade tipo <code>Base</code>
      * @return  regresa booleano de si choca o no de tipo <code>Boolean</code> 
      */
@@ -134,7 +134,7 @@ public class Base extends Animacion {
     }
 
     /**
-     * 
+     * metodo para saber si un punto esta dentro del objeto
      * @param x es para conocer la posicion d x del punto tipo <code>int</code>
      * @param y es para conocer la posicion d x del punto tipo <code>int</code>
      * @return regresa booleano de si esta dentro el punto o no <code>Boolean</code>

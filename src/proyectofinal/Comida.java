@@ -19,7 +19,7 @@ public class Comida extends Base {
     private int valor;
 
     /**
-     * 
+     * Contructor de Comida
      * @param posX es para saber la posicion x de tipo <code>int</code>
      * @param posY es para saber la posicion y de tipo <code>int</code>
      * @param anim  para asignarle una animacion al objeto de tipo <code>Animacion</code>
@@ -31,7 +31,7 @@ public class Comida extends Base {
     }
 
     /**
-     * 
+     * Metodo para asignar valor a valor
      * @param valor es para saber cuantos puntos dara de tipo <code>int</code>
      */
     public void setValor(int valor) {     //metodo para asignar valor a valor
@@ -39,7 +39,7 @@ public class Comida extends Base {
     }
 
     /**
-     * 
+     * Metodo para obtener valor
      * @return regresa valor de tipo <code>int</code>
      */
     public int getValor() {              //metodo para obtener valor

@@ -18,7 +18,7 @@ public class Enemigo extends Base {
     private int velocidad;
 
     /**
-     * 
+     * Constructor de Enemigo
      * @param posX es para saber la posicion x de tipo <code>int</code>
      * @param posY es para saber la posicion y de tipo <code>int</code>
      * @param anim para asignarle una animacion al objeto de tipo <code>Animacion
@@ -30,7 +30,7 @@ public class Enemigo extends Base {
     }
 
     /**
-     * 
+     * Metodo para asignar velocidad
      * @param velocidad es para saber la velocidad de tipo <code>int</code>
      */
     public void setVelocidad(int velocidad) {     //metodo para asignar valor a velocidad
@@ -38,7 +38,7 @@ public class Enemigo extends Base {
     }
 
     /**
-     * 
+     * Metodo para obtener velocidad
      * @return regresa velocidad de tipo <code>int</code>
      */
     public int getVelocidad() {              //metodo para obtener velocidad

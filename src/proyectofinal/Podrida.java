@@ -18,7 +18,7 @@ public class Podrida extends Base {
     private final int menos;
 
     /**
-     * 
+     * Constructor de Podrida
      * @param posX es para saber la posicion x de tipo <code>int</code>
      * @param posY es para saber la posicion y de tipo <code>int</code>
      * @param anim para asignarle una animacion al objeto de tipo <code>Animacion</code>
@@ -29,7 +29,7 @@ public class Podrida extends Base {
     }
 
     /**
-     * 
+     * Metodo para obtener la variable menos
      * @return regresa menos de tipo <code>int</code> 
      */
     public int getMenos() {              //metodo para obtener menos

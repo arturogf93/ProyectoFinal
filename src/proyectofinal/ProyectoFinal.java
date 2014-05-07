@@ -19,7 +19,7 @@ public class ProyectoFinal {
 
     /**
      *
-     *
+     * Metodo que sivre para el main
      * @param args the command line arguments
      * @throws java.io.IOException
      */
